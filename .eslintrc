@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "xo/browser",
+    "xo",
+    "xo/esnext"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": [
+    "babel"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "camelcase": 1,
+    "capitalized-comments": 1,
+    "no-console": 0,
+    "key-spacing": ["error", { "mode": "minimum" }],
+    "no-multi-spaces": 0,
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-undef": 0,
+    "no-case-declarations": 0,
+    "valid-jsdoc": 2,
+    "indent": ["error", 4, {"SwitchCase": 1}],
+    "arrow-parens": ["error", "always"],
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "linebreak-style": 0
+  }
+}
