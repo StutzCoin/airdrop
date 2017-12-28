@@ -7,6 +7,12 @@ import {saveUsers, truncateUsers} from '../helpers/user';
 describe('Database: Users', () => {
     const UsersTable = models.Users;
 
+    before( done => {
+        models.sequelize.sync().then(function() {
+            done();
+        });
+    });
+
     beforeEach(done => {
         saveUsers([{
             FirstName: 'jane',

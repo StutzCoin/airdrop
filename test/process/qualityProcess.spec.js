@@ -23,6 +23,12 @@ async function checkUserAndReturn(usersToSave) {
 
 describe('Process: qualityProcess', () => {
 
+    before( done => {
+        models.sequelize.sync().then(function() {
+            done();
+        });
+    });
+
     afterEach(done => {
         truncateUsers();
         done();

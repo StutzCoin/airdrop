@@ -18,6 +18,12 @@ async function getFirstUser() {
 
 describe('Process: smsProcess', () => {
 
+    before( done => {
+        models.sequelize.sync().then(function() {
+            done();
+        });
+    });
+
     afterEach(done => {
         truncateUsers();
         done();
