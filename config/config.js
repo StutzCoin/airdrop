@@ -9,6 +9,7 @@ module.exports = {
             acquire: 30000,
             idle: 10000
         },
+        networkType: 'testnet',
     },
     test: {
         dialect: "sqlite",
@@ -20,5 +21,6 @@ module.exports = {
         database: process.env.DB_NAME,
         host: process.env.DB_HOSTNAME,
         dialect: 'sqlite',
+        networkType: '',
     }
 };

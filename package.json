@@ -37,6 +37,7 @@
     "email-validator": "^1.1.1",
     "moment": "^2.20.1",
     "util": "^0.10.3",
+    "wallet-address-validator" : "^0.1.1"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.2",

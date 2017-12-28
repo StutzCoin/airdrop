@@ -3,6 +3,8 @@
 const models = require('../../models/index');
 const validator = require("email-validator");
 
+var WAValidator = require('wallet-address-validator');
+
 import logger from '../modules/logger';
 
 const env = process.env.NODE_ENV || 'development';
@@ -25,8 +27,7 @@ export async function check() {
                         // TODO only validate swiss phone
                         user.PhoneOK = false;
 
-                        // TODO validate adress
-                        user.WalletIdOK = false;
+                        user.WalletIdOK = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
                         user.save().then( () => {
 
