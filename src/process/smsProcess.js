@@ -19,9 +19,6 @@ function getRandomNumber() {
 //TODO use mocking instead of unit test boolean
 export async function sms(unitTest = false) {
     return new Promise(function (resolve, reject) {
-
-        logger.log('info', 'Send email to users');
-
         models.Users.findAll({
             where: {
                 EMailOK: true,
