@@ -1,5 +1,7 @@
 # Stutz Airdrop 
 
+[![Build Status](https://travis-ci.org/StutzCoin/airdrop.svg?branch=master)](https://travis-ci.org/StutzCoin/airdrop)
+
 # Overview
 
 Users can register their data using a Form (typeform.com), data are synchronized into a Google Sheet
