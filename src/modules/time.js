@@ -1,3 +1,8 @@
+/**
+ * Duration helper.
+ *
+ * @type {{seconds(*): *, minutes(*): *, hours(*): *, days(*): *, weeks(*): *, years(*): *}}
+ */
 export const duration = {
     seconds(val) {
         return val;

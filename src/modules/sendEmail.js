@@ -8,6 +8,12 @@ const nodeMailer = require('nodemailer');
 const pug = require('pug');
 import logger from './logger';
 
+/**
+ * render a PUG templates.
+ *
+ * @param templateName
+ * @returns {Promise<any>}
+ */
 export async function renderEmail(templateName) {
     const template = templateName || 'email.pug';
     return new Promise(function (resolve, reject) {

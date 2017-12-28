@@ -10,6 +10,12 @@ module.exports = {
             idle: 10000
         },
         networkType: 'testnet',
+        twilio: {
+            accountSid: 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+            authToken: 'your_auth_token',
+            number: 'phone?number',
+        },
+        checkCodeUrl: 'www.todo',
     },
     test: {
         dialect: "sqlite",

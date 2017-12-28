@@ -19,9 +19,17 @@ module.exports = (sequelize, DataTypes) => {
         },
         Phone: DataTypes.STRING,
 
+        // SMS
+        SmsKey: DataTypes.STRING,
+        SmsKeyValidTo: DataTypes.STRING,
+        SmsSent: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        SmsSentDate: DataTypes.DATE,
+
         // Audit
         ImportedDate: DataTypes.DATE,
-        SmsSentDate: DataTypes.DATE,
         EmailSentDate: DataTypes.DATE,
 
         // Status
@@ -38,11 +46,6 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false,
         },
         WalletIdOK: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
-
-        SmsSent: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },

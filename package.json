@@ -22,6 +22,7 @@
     "pm2": "./bin/pm2"
   },
   "dependencies": {
+    "twilio": "^3.11.0",
     "sequelize": "^4.28.0",
     "sequelize-cli": "^3.2.0",
     "sqlite3": "^3.1.13",

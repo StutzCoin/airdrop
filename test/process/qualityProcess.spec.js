@@ -6,8 +6,8 @@ import {saveUsers, truncateUsers} from '../helpers/user';
 
 import {expect} from 'chai';
 
-async function checkUserAndReturn(userWithValidTestNetWallet) {
-    await saveUsers(userWithValidTestNetWallet);
+async function checkUserAndReturn(usersToSave) {
+    await saveUsers(usersToSave);
 
     // Act
     await check();
