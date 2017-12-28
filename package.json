@@ -37,7 +37,8 @@
     "email-validator": "^1.1.1",
     "moment": "^2.20.1",
     "util": "^0.10.3",
-    "wallet-address-validator" : "^0.1.1"
+    "wallet-address-validator" : "^0.1.1",
+    "google-libphonenumber": "^3.0.9"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.2",

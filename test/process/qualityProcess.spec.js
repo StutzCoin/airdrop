@@ -35,6 +35,7 @@ describe('Process: qualityProcess', () => {
             EMail: '',
             LastName: '',
             WalletId: '',
+            Phone: '+33389000000'
         }]);
 
         expect(user.EMailOK).to.be.equal(false);
@@ -47,6 +48,7 @@ describe('Process: qualityProcess', () => {
             EMail: 'any',
             LastName: '',
             WalletId: '',
+            Phone: '+33389000000'
         }]);
 
         expect(user.EMailOK).to.be.equal(false);
@@ -59,6 +61,7 @@ describe('Process: qualityProcess', () => {
             EMail: 'any@acme.com',
             LastName: '',
             WalletId: '',
+            Phone: '+33389000000'
         }]);
 
         expect(user.EMailOK).to.be.equal(true);
@@ -71,6 +74,7 @@ describe('Process: qualityProcess', () => {
             EMail: 'any@acme.com',
             LastName: '',
             WalletId: 'mzBc4XEFSdzCDcTxAgf6EZXgsZWpztRhef',
+            Phone: '+33389000000'
         }]);
 
         expect(user.WalletIdOK).to.be.equal(true);
@@ -83,6 +87,7 @@ describe('Process: qualityProcess', () => {
             EMail: 'any@acme.com',
             LastName: '',
             WalletId: 'LVg2kJoFNg45Nbpy53h7Fe1wKyeXVRhMH9',
+            Phone: '+33389000000'
         }]);
 
         expect(user.WalletIdOK).to.be.equal(false);
@@ -95,9 +100,48 @@ describe('Process: qualityProcess', () => {
             EMail: 'any@acme.com',
             LastName: '',
             WalletId: '',
+            Phone: '+33389000000'
         }]);
 
         expect(user.WalletIdOK).to.be.equal(false);
     });
 
+    it('Should set PhoneOK=false for non-CH swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            IsNew: true,
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            LastName: '',
+            WalletId: '',
+            Phone: '+33389000000'
+        }]);
+
+        expect(user.PhoneOK).to.be.equal(false);
+    });
+
+    it('Should set PhoneOK=true for CH swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            IsNew: true,
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            LastName: '',
+            WalletId: '',
+            Phone: '+41791234567'
+        }]);
+
+        expect(user.PhoneOK).to.be.equal(true);
+    });
+
+    it('Should set PhoneOK=true for CH swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            IsNew: true,
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            LastName: '',
+            WalletId: '',
+            Phone: '0791234567'
+        }]);
+
+        expect(user.PhoneOK).to.be.equal(true);
+    });
 });

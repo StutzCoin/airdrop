@@ -3,7 +3,9 @@
 const models = require('../../models/index');
 const validator = require("email-validator");
 
-var WAValidator = require('wallet-address-validator');
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+
+const WAValidator = require('wallet-address-validator');
 
 import logger from '../modules/logger';
 
@@ -24,8 +26,9 @@ export async function check() {
                     users.forEach(user => {
                         user.EMailOK = validator.validate(user.EMail);
 
-                        // TODO only validate swiss phone
-                        user.PhoneOK = false;
+                        var phone_number = phoneUtil.parse(user.Phone, "CH");
+
+                        user.PhoneOK = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
 
                         user.WalletIdOK = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
