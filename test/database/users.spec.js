@@ -13,17 +13,15 @@ describe('Database: Users', () => {
         });
     });
 
-    beforeEach(done => {
-        saveUsers([{
+    beforeEach( async () => {
+        await saveUsers([{
             FirstName: 'jane',
             LastName: 'doe',
             WalletId: "0x0000000",
             EMail: 'any@acme.com',
             IsNew: false,
             Mail: 'any@host.com',
-        }]).then(() => {
-           done();
-        });
+        }]);
     });
 
     afterEach(() => {

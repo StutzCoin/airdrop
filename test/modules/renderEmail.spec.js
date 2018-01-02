@@ -6,15 +6,13 @@ import {saveUsers, truncateUsers, getFirstUser} from '../helpers/user';
 
 describe('renderEmailContent', () => {
 
-    afterEach(done => {
-        truncateUsers();
-
-        done();
+    afterEach(async () => {
+        await truncateUsers();
     });
 
     it('should render email content properly', async () => {
         // Prepare
-        saveUsers([{
+        await saveUsers([{
             IsNew: true,
             FirstName: 'Jane',
             EMail: '',
