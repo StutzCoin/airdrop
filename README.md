@@ -34,21 +34,14 @@ This module
 
 ### Import
 
-#### starting server side webhook
+#### start server side webhook
 ```
 node src/process/importProcess.js
 ```
 
 #### testing
 Simulate Typeform calling back your server
-```
-curl -X POST localhost:3000/receive_results --data '{
-    "firstname": "jane",
-    "lastname": "doe",
-    "walletid": "0x00000",
-    "phone": "079",
-    "email": "jane@acme.com"}' -H "Content-Type: application/json"
-```
+start server side webhook and see how to simulate call with curl from test/fixtures/readme.md
 
 # Overview
 

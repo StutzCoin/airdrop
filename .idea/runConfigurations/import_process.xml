@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="import process" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="src/process/importProcess.js" working-dir="$PROJECT_DIR$">
+    <method />
+  </configuration>
+</component>

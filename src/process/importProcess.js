@@ -36,18 +36,20 @@ app.get('/alive', function handleAlive(req, res) {
 
 app.post('/receive_results', function handleReceiveResults(req, res) {
     log("Got results!");
-    var body = req.body;
+    var answers = req.body.form_response.answers;
 
+    // see https://developer.typeform.com/webhooks/example-response/
     const model = models.Users.build({
-        FirstName: body.firstname,
-        LastName: body.lastname,
-        WalletId: body.walletid,
-        Phone: body.phone,
-        EMail: body.email,
+        FirstName: answers[0].text,
+        LastName: answers[1].text,
+        EMail: answers[2].email,
+        Phone: answers[3].text,
+        WalletId: answers[4].text,
     });
     model.save();
 
     //TODO ensure uniqueness here or later wenn sending coin to accounts?
 
-    res.send('OK');
+    res.send('OK', 200);
 });
+
