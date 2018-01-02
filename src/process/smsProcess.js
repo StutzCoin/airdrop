@@ -23,8 +23,8 @@ export async function sms(unitTest = false) {
 
         models.Users.findAll({
             where: {
-                EMailOK: true,
-                PhoneOK: true,
+                EMailValidated: true,
+                PhoneValid: true,
             },
             limit: config.readLimit
         }).then(users => {

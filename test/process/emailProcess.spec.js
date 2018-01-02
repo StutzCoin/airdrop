@@ -51,9 +51,9 @@ describe('Process: emailProcess', () => {
             WalletId: '',
             Phone: '+41790000000',
             // require by process
-            EMailOK: true,
+            EMailValid: true,
             EmailSent: false,
-            PhoneOK: true,
+            PhoneValid: true,
         }]);
 
         // Act

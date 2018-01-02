@@ -24,15 +24,15 @@ export async function check() {
         }).then(users => {
             if (users.length > 0) {
                 users.forEach(user => {
-                    user.EMailOK = validator.validate(user.EMail);
+                    user.EMailValid = validator.validate(user.EMail);
 
                     const phone_number = phoneUtil.parse(user.Phone, "CH");
 
-                    user.PhoneOK = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
+                    user.PhoneValid = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
 
-                    user.WalletIdOK = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
+                    user.WalletIdValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
-                    if (user.EMailOK && user.PhoneOK && user.WalletIdOK) {
+                    if (user.EMailValid && user.PhoneValid && user.WalletIdValid) {
                         user.IsNew = false;
                     }
 

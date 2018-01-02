@@ -10,12 +10,15 @@ module.exports = {
             idle: 10000
         },
         networkType: 'testnet',
+        data: {
+            formUrl: "https://cdricwalter.typeform.com/to/bhypWc",
+        },
         sms: {
             accountSid: 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
             authToken: 'your_auth_token',
             number: 'phone?number',
             expireInMinutes: 15,
-            formUrl: "",
+            formUrl: "https://cdricwalter.typeform.com/to/RNvI6l",
         },
         checkCodeUrl: 'www.todo',
         email: {
@@ -23,7 +26,7 @@ module.exports = {
             user: "stutz@gmail.com",
             password: "any",
             expireInMinutes: 15,
-            formUrl: "",
+            formUrl: "https://cdricwalter.typeform.com/to/mLte7Q",
         }
     },
     test: {

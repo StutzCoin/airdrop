@@ -10,7 +10,7 @@ const config = require('../../config/config.js')[env];
 const min = 10000;
 const max = 99999;
 
-//TODO replace with UUID to avoid brute force?
+//TODO replace with UUID to avoid brute force? number should be unique to update right user
 function getRandomNumber() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -40,7 +40,7 @@ export async function email() {
     return new Promise(function (resolve, reject) {
         models.Users.findAll({
             where: {
-                EMailOK: true,
+                EMailValid: true,
                 EmailSent: false,
             },
             limit: config.readLimit

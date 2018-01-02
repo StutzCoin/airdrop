@@ -34,7 +34,7 @@ describe('Process: qualityProcess', () => {
         done();
     });
 
-    it('Should set EMailOK=false for invalid empty email field', async () => {
+    it('Should set EMailValid=false for invalid empty email field', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -44,10 +44,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.EMailOK).to.be.equal(false);
+        expect(user.EMailValid).to.be.equal(false);
     });
 
-    it('Should set EMailOK=false for invalid email field', async () => {
+    it('Should set EMailValid=false for invalid email field', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -57,10 +57,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.EMailOK).to.be.equal(false);
+        expect(user.EMailValid).to.be.equal(false);
     });
 
-    it('Should set EMailOK=false for valid email field', async () => {
+    it('Should set EMailValid=false for valid email field', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -70,10 +70,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.EMailOK).to.be.equal(true);
+        expect(user.EMailValid).to.be.equal(true);
     });
 
-    it('Should set WalletIdOK=true for valid testnet wallet id', async () => {
+    it('Should set WalletIdValid=true for valid testnet wallet id', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -83,10 +83,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.WalletIdOK).to.be.equal(true);
+        expect(user.WalletIdValid).to.be.equal(true);
     });
 
-    it('Should set WalletIdOK=false for valid mainnet wallet id', async () => {
+    it('Should set WalletIdValid=false for valid mainnet wallet id', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -96,10 +96,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.WalletIdOK).to.be.equal(false);
+        expect(user.WalletIdValid).to.be.equal(false);
     });
 
-    it('Should set WalletIdOK=false for empty  wallet id', async () => {
+    it('Should set WalletIdValid=false for empty  wallet id', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -109,10 +109,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.WalletIdOK).to.be.equal(false);
+        expect(user.WalletIdValid).to.be.equal(false);
     });
 
-    it('Should set PhoneOK=false for non-CH swiss number', async () => {
+    it('Should set PhoneValid=false for non-CH swiss number', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -122,10 +122,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
-        expect(user.PhoneOK).to.be.equal(false);
+        expect(user.PhoneValid).to.be.equal(false);
     });
 
-    it('Should set PhoneOK=true for CH swiss number', async () => {
+    it('Should set PhoneValid=true for CH swiss number', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -135,10 +135,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+41791234567'
         }]);
 
-        expect(user.PhoneOK).to.be.equal(true);
+        expect(user.PhoneValid).to.be.equal(true);
     });
 
-    it('Should set PhoneOK=true for CH swiss number', async () => {
+    it('Should set PhoneValid=true for CH swiss number', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
             FirstName: 'Jane',
@@ -148,6 +148,6 @@ describe('Process: qualityProcess', () => {
             Phone: '0791234567'
         }]);
 
-        expect(user.PhoneOK).to.be.equal(true);
+        expect(user.PhoneValid).to.be.equal(true);
     });
 });

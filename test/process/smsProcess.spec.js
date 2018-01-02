@@ -28,9 +28,8 @@ describe('Process: smsProcess', () => {
             WalletId: '',
             Phone: '+41790000000',
             // require by process
-            EMailOK: true,
-            EmailSent: true,
-            PhoneOK: true,
+            EmailValidated: true,
+            PhoneValid: true,
         }]);
 
         // Act
