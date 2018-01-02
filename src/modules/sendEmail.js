@@ -1,71 +1,63 @@
-'use strict';
+#!/usr/bin/env node
+
+import logger from '../modules/logger';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
-const nodeMailer = require('nodemailer');
-
-const pug = require('pug');
-import logger from './logger';
-
-/**
- * render a PUG templates.
- *
- * @param templateName
- * @returns {Promise<any>}
- */
-export async function renderEmail(templateName) {
-    const template = templateName || 'email.pug';
-    return new Promise(function (resolve, reject) {
-        logger.log('info', 'renderEmail module started');
-        try {
-            // require absolute path, don't remove __dirname
-            const html = pug.renderFile(__dirname + '/../../templates/' + template, pug.runtime.merge({
-                filename: template,
-                compileDebug: false,
-                pretty: true
-            }));
-
-            resolve(html);
-        }
-        catch (err) {
-            logger.log('error', 'while rendering email \'' + template + '\' html template for ')
-            reject(err);
-        }
-    });
-};
-
-
-export async function sendEmail(to, html) {
-    logger.log('info', 'sendEmail module started');
-
-    // create reusable transporter object using the default SMTP transport
-    const transporter = nodeMailer.createTransport({
-        host: config.smtp.host,
-        port: config.smtp.port,
-        secure: config.smtp.secure, // true for 465, false for other ports
-        auth: {
-            user: config.smtp.auth.user,
-            pass: config.smtp.auth.pass
-        }
-    });
-
-    const message = {
-        from: config.smtp.from,
-        to: to,
-        subject: to,
-        text: ' ',
-        html: html
-    };
-
+export async function renderEmailContent(user, template) {
     try {
-        // send mail with defined transport object
-        await transporter.sendMail(message);
-    } catch (err) {
-        logger.log('error', err);
-        throw err;
+        // require absolute path, don't remove __dirname
+        const html = await pug.renderFile(__dirname + '/../../templates/' + template, pug.runtime.merge({
+            filename: template,
+            compileDebug: false,
+            pretty: true,
+            // variables used in template
+            firstName: user.FirstName,
+            lastName: user.LastName,
+            emailKey: user.EmailKey,
+            email: user.Email,
+            emailKeyValidTo: user.EmailKeyValidTo,
+            emailValidationUrl: config.email.formUrl + '?key=' + user.EmailKey + '&firstname=' + user.FirstName + '&lastname=' + user.LastName//use type-form hidden fields
+        }));
+
+        return html;
     }
-    finally {
-        transporter.close();
+    catch (err) {
+        logger.log('error', 'while rendering email \'' + template + '\' html template for user ' + user.Name)
     }
+}
+
+export async function sendEmail(user, templateName, subject) {
+    return new Promise(function (resolve, reject) {
+        // TODO translations see https://www.npmjs.com/package/gulp-i18n-pug
+        const content = renderEmailContent(user, templateName);
+
+        const mailOptions = {
+            from: config.email.from,
+            to: user.EMail,
+            subject: subject,
+            text: content
+        };
+
+        const nodemailer = require('nodemailer');
+        //  TODO only support gmail for now
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: config.email.user,
+                pass: config.email.password
+            }
+        });
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                logger.log('error', error);
+                reject(false);
+            } else {
+                console.log('audit', 'Email sent: ' + info.response);
+                resolve(true);
+            }
+        });
+    });
 }

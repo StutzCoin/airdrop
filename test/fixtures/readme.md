@@ -1,4 +1,4 @@
-curl -X POST localhost:3000/receive_results --data '{
+curl -X POST localhost:3000/userRegistered --data '{
                                                       "event_id": "xxxxxxx",
                                                       "event_type": "form_response",
                                                       "form_response": {

@@ -125,6 +125,19 @@ describe('Process: qualityProcess', () => {
         expect(user.PhoneValid).to.be.equal(false);
     });
 
+    it('Should set PhoneValid=false for non-CH swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            IsNew: true,
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            LastName: '',
+            WalletId: '',
+            Phone: '0389000000'
+        }]);
+
+        expect(user.PhoneValid).to.be.equal(false);
+    });
+
     it('Should set PhoneValid=true for CH swiss number', async () => {
         let user = await checkUserAndReturn([{
             IsNew: true,
@@ -146,6 +159,19 @@ describe('Process: qualityProcess', () => {
             LastName: '',
             WalletId: '',
             Phone: '0791234567'
+        }]);
+
+        expect(user.PhoneValid).to.be.equal(true);
+    });
+
+    it('Should set PhoneValid=true for CH swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            IsNew: true,
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            LastName: '',
+            WalletId: '',
+            Phone: '791234567'
         }]);
 
         expect(user.PhoneValid).to.be.equal(true);

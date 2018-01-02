@@ -19,7 +19,17 @@ describe('Process: importProcess', () => {
         done();
     });
 
-    it('import jane doe', async function () {
+    it('userRegistered webhook', async function () {
         // TODO
     });
+
+    it('validateEmail webhook', async function () {
+        // TODO
+    });
+
+    it('validatePhone webhook', async function () {
+        // TODO
+    });
+
+
 });

@@ -9,12 +9,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 var util = require('util');
+import {sendEmail} from '../../src/modules/sendEmail';
 
 // Simple way of having nice logs
 function log(message) {
     var prefix = (new Date).toISOString();
 
-    if(typeof message === 'object') {
+    if (typeof message === 'object') {
         console.log(prefix + " ▼");
         console.log(util.inspect(message, {showHidden: false, depth: 10}));
     } else {
@@ -34,7 +35,10 @@ app.get('/alive', function handleAlive(req, res) {
     res.send('yes');
 });
 
-app.post('/receive_results', function handleReceiveResults(req, res) {
+/**
+ * WebHook for form A
+ */
+app.post('/userRegistered', function handleReceiveResults(req, res) {
     log("Got results!");
     var answers = req.body.form_response.answers;
 
@@ -45,6 +49,7 @@ app.post('/receive_results', function handleReceiveResults(req, res) {
         EMail: answers[2].email,
         Phone: answers[3].text,
         WalletId: answers[4].text,
+        IsNew: true,
     });
     model.save();
 
@@ -53,22 +58,67 @@ app.post('/receive_results', function handleReceiveResults(req, res) {
     res.send('OK', 200);
 });
 
+/**
+ * WebHook for form B
+ */
 app.post('/validateEmail', function handleReceiveResults(req, res) {
     log("Got results!");
     var answers = req.body.form_response.answers;
 
-    // see https://developer.typeform.com/webhooks/example-response/
-    //TODO add code
+    const emailKey = answers[0].text;
+
+    // search for user matching
+    models.Users.findAll({
+        where: {
+            IsNew: false,
+            EmailSent: true,
+            EmailKey: emailKey,
+        },
+        limit: 1
+    }).then(users => {
+        const user = users[0];
+
+        // set field
+        user.EmailValidated = true;
+        user.save().then(() => {
+            const subject = 'Stutz coin: email validated';
+            sendEmail(user, 'email-validated.pug', subject).then((success) => {
+            });
+        })
+    });
 
     res.send('OK', 200);
 });
 
-app.post('/validateSMS', function handleReceiveResults(req, res) {
+/**
+ * WebHook for form C
+ */
+app.post('/validatePhone', function handleReceiveResults(req, res) {
     log("Got results!");
     var answers = req.body.form_response.answers;
 
     // see https://developer.typeform.com/webhooks/example-response/
-    //TODO add code
+    const smsKey = answers[0].text;
+
+    // search for user matching
+    models.Users.findAll({
+        where: {
+            IsNew: false,
+            SmsSent: true,
+            SmsKey: smsKey,
+        },
+        limit: 1
+    }).then(users => {
+        const user = users[0];
+
+        // set field
+        user.PhoneValidated = true;
+        user.save().then(() => {
+            const subject = 'Stutz coin: registration completed';
+            sendEmail(user, 'registration-completed.pug', subject).then((success) => {
+            });
+        })
+    });
 
     res.send('OK', 200);
 });
