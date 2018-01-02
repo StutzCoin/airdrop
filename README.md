@@ -4,18 +4,25 @@
 
 # How it is working
 
-1. Users use an online "Form A" where he can enter their Name, First Name, Email, Phone number and LTC address. 
+1. Users use an online "Form A" for entering their Name, First Name, Email, Phone number and LTC address. 
    * Data are written to a Google Sheet tables for auditing (typeform configuration)
-   * Data are synchronized to this backend module database (sequelize ORM + any database is supported).
+   * Data are synchronized to this backend module databaseusing typeform webhook (and nodejs sequelize ORM + any database).
    
-2. System regularly check for valid user data (email valid, phone number swiss, LTC adress valid). For validating email address, it send: 
+2. System regularly validate user data in database
+   * Email valid, swiss phone number, LTC adress valid (mainnet not testnet)
+   
+3. System regularly check for validated user data. For validating email address, it send: 
    * an email link with expiry time that redirect user to another "Form B" (config.email.formUrl). 
    * an error message if his phone is not a valid swiss number , or not a valid LTC address (mainnet not testnet).
+ 
+ -> user need to confirm his email address by clicking in email link and validating B form.
    
 3. System regularly check for valid user with validated email. For validating Phone number, it send: 
-   * sms link with expiry time that redirect user to another "Form C" (config.sms.formUrl). 
+   * asms link with expiry time that redirect user to another "Form C" (config.sms.formUrl). 
    * error message to user if his Phone is not a valid swiss number.
-      
+    
+ -> user need to confirm his swiss phone number by clicking in SMS the link and validating C form.
+       
 All URL send to user through email/sms are unique for each user, contains a UUID v5 that is prefilled in every form B/C using Type-Form hidden field.
 
 ```

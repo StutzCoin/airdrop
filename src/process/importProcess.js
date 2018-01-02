@@ -53,3 +53,22 @@ app.post('/receive_results', function handleReceiveResults(req, res) {
     res.send('OK', 200);
 });
 
+app.post('/validateEmail', function handleReceiveResults(req, res) {
+    log("Got results!");
+    var answers = req.body.form_response.answers;
+
+    // see https://developer.typeform.com/webhooks/example-response/
+    //TODO add code
+
+    res.send('OK', 200);
+});
+
+app.post('/validateSMS', function handleReceiveResults(req, res) {
+    log("Got results!");
+    var answers = req.body.form_response.answers;
+
+    // see https://developer.typeform.com/webhooks/example-response/
+    //TODO add code
+
+    res.send('OK', 200);
+});
