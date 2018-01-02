@@ -4,11 +4,22 @@
 
 # How it is working
 
-1. Users visit a page and land in a first online "Form A" where they can enter their Name, First Name and Email.
-2. System send a confirmation email to user with a Link that redirect user to another "Form B", on this form user can enter his phone number and submit
-3. System send either 
-   * confirmation SMS to user with a link/registration to a "Form C", where user has to enter this confirmation code. Request from user is accepted.
+1. Users visit a page and land in a first online "Form A" where they can enter their Name, First Name, Email, LTC adress
+2. System send either 
+   * confirmation email to user with a Link that redirect user to another "Form B", for entering the email validation number.
    * error message to user if his email is not a valid swiss number , not a valid LTC address.
+3. System send either 
+   * confirmation SMS to user with a link/registration to a "Form C", for entering the SMS validation number.. Request from user is accepted.
+   * error message to user if his email is not a valid swiss number , not a valid LTC address.
+
+```
+Form A               |                  |    Form B             |                | Form C               |
+Name         [     ] |                  | Email code   [      ] |                | SMS code    [      ] |
+First Name   [     ] | -> send email -> |                       | -> send SMS -> |                      |
+Email        [     ] |                  |                       |                |                      |
+Phone Number [     ] |                  |                       |                |                      |
+LTC Address  [     ] |                  |                       |                |                      |
+```
 
 # Overview
 
@@ -19,7 +30,7 @@ This NodeJS module run multiple asynchronous processes using PM2
 * Users data get imported every minutes (importProcess.js) in sqlite3/mysql
 * Users data marked as New are validated (qualityProcess.js)
 * If Users email is valid, a validation email is sent to user (emailProcess.js)
-* If Users email is validated, a validation SMS is sent to user (smsProcess.js)
+* If Users email is validated, a validation SMS is sent to user (smsProcess.js) that need to be entered in the next 15min at url config.checkCodeUrl and submitted
 
 ## Starting App
 
