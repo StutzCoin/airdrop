@@ -28,7 +28,27 @@ LTC Address  [     ] |                  |                       |               
 ```
 
 ## typeform.com
-This module require typeform.com pro features "hidden fields"
+This module 
+* require typeform.com pro features "hidden fields" (https://www.typeform.com/help/hidden-fields/)
+* It use webhook (https://www.typeform.com/help/webhooks/) to get data as soon as forms are completed.
+
+### Import
+
+#### starting server side webhook
+```
+node src/process/importProcess.js
+```
+
+#### testing
+Simulate Typeform calling back your server
+```
+curl -X POST localhost:3000/receive_results --data '{
+    "firstname": "jane",
+    "lastname": "doe",
+    "walletid": "0x00000",
+    "phone": "079",
+    "email": "jane@acme.com"}' -H "Content-Type: application/json"
+```
 
 # Overview
 

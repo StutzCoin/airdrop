@@ -29,6 +29,9 @@ module.exports = {
         },
         coin: {
             home: "'http://xxxxxxx.com/"
+        },
+        import: {
+            port: 3000,
         }
     },
     test: {
