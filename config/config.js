@@ -10,12 +10,21 @@ module.exports = {
             idle: 10000
         },
         networkType: 'testnet',
-        twilio: {
+        sms: {
             accountSid: 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
             authToken: 'your_auth_token',
             number: 'phone?number',
+            expireInMinutes: 15,
+            formUrl: "",
         },
         checkCodeUrl: 'www.todo',
+        email: {
+            from: "stutzbot@gmail.com",
+            user: "stutz@gmail.com",
+            password: "any",
+            expireInMinutes: 15,
+            formUrl: "",
+        }
     },
     test: {
         dialect: "sqlite",

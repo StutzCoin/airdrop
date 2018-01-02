@@ -25,4 +25,14 @@ export async function truncateUsers() {
     await usersTable.destroy({truncate: true});
 }
 
+export async function getFirstUser(firstName) {
+    firstName = firstName || 'Jane';
+    const users = await models.Users.findAll({
+        where: {FirstName: firstName}
+    });
+    expect(users.length, 1);
+
+    let user = users[0];
+    return user;
+}
 

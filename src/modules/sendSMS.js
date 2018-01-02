@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
 const twilio = require('twilio');
-const client = new twilio(config.twilio.accountSid, config.twilio.authToken);
+const client = new twilio(config.sms.accountSid, config.sms.authToken);
 
 /**
  *  send SMS using Twilio.com
@@ -18,7 +18,7 @@ export async function sendSMS(to, content) {
     await client.messages.create({
         body: content,
         to: to,
-        from: config.twilio.number
+        from: config.sms.number
     })
         .then((message) => logger.log('audit', 'message sent to ' + to +' ' + message.sid));
 }

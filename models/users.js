@@ -9,17 +9,41 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+
+
+        // EMail
         EMail: {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        EMailOK: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        EmailSent: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        EmailSentDate: DataTypes.DATE,
+        EmailKey: DataTypes.STRING,
+        EmailKeyValidTo: DataTypes.STRING,
+
+        // Wallet
         WalletId: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        Phone: DataTypes.STRING,
+        WalletIdOK: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
 
-        // SMS
+        // Phone, SMS
+        Phone: DataTypes.STRING,
+        PhoneOK: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
         SmsKey: DataTypes.STRING,
         SmsKeyValidTo: DataTypes.STRING,
         SmsSent: {
@@ -30,30 +54,12 @@ module.exports = (sequelize, DataTypes) => {
 
         // Audit
         ImportedDate: DataTypes.DATE,
-        EmailSentDate: DataTypes.DATE,
 
         // Status
         IsNew: {  // at import time
             type: DataTypes.BOOLEAN,
             defaultValue: true,
         },
-        EMailOK: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
-        PhoneOK: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
-        WalletIdOK: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
-        EmailSent: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
-
     });
 
     return Users;

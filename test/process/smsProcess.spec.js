@@ -2,19 +2,9 @@ import {sms} from '../../src/process/smsProcess';
 
 const models = require('../../models/index');
 
-import {saveUsers, truncateUsers} from '../helpers/user';
+import {saveUsers, truncateUsers, getFirstUser} from '../helpers/user';
 
 import {expect} from 'chai';
-
-async function getFirstUser() {
-    const users = await models.Users.findAll({
-        where: {FirstName: 'Jane'}
-    });
-    expect(users.length, 1);
-
-    let user = users[0];
-    return user;
-}
 
 describe('Process: smsProcess', () => {
 

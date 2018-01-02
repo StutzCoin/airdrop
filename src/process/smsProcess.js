@@ -12,6 +12,7 @@ import {sendSMS} from '../modules/sendSMS';
 const min = 10000;
 const max = 99999;
 
+//TODO replace with UUID to avoid brute force?
 function getRandomNumber() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -19,10 +20,10 @@ function getRandomNumber() {
 //TODO use mocking instead of unit test boolean
 export async function sms(unitTest = false) {
     return new Promise(function (resolve, reject) {
+
         models.Users.findAll({
             where: {
                 EMailOK: true,
-                EmailSent: true,
                 PhoneOK: true,
             },
             limit: config.readLimit
@@ -31,10 +32,10 @@ export async function sms(unitTest = false) {
             users.forEach(user => {
                 // Generate unique number valid 15 minutes
                 user.SmsKey = getRandomNumber();
-                user.SmsKeyValidTo = new Date() + duration.minutes(15);
+                user.SmsKeyValidTo = new Date() + duration.minutes(config.sms.expireInMinutes);
 
                 // TODO translations, use template engine?
-                const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' Enter code Here: ' + config.checkCodeUrl;
+                const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' please enter code Here: ' + config.checkCodeUrl + ' to complete airdrop registration.';
 
                 try {
                     if (!unitTest) {
