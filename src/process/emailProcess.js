@@ -16,11 +16,12 @@ async function renderEmailContent(user, template) {
             filename: template,
             compileDebug: false,
             pretty: true,
+            // variables used in template
             firstName: user.FirstName,
             lastName: user.LastName,
             EmailKey: user.EmailKey,
             EmailKeyValidTo: user.EmailKeyValidTo,
-            EmailValidationUrl: config.email.formUrl + '?key=' + user.EmailKey //use type-form hidden fields
+            EmailValidationUrl: config.email.formUrl + '?key=' + user.EmailKey + '&firstname=' + user.FirstName + '&lastname=' + user.LastName//use type-form hidden fields
         }));
 
         return html;

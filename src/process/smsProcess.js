@@ -29,7 +29,7 @@ export async function sms(unitTest = false) {
                 user.SmsKeyValidTo = new Date() + duration.minutes(config.sms.expireInMinutes);
 
                 // TODO translations, use template engine?
-                const url = config.sms.formUrl + '?key=' + user.SmsKey;  //use type-form hidden fields
+                const url = config.sms.formUrl + '?key=' + user.SmsKey + '&firstname=' + user.FirstName + '&lastname=' + user.LastName;  //use type-form hidden fields
                 const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' please visit url: ' + url + ' to complete airdrop registration.';
 
                 try {
