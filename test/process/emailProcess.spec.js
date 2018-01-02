@@ -23,7 +23,7 @@ describe('Process: emailProcess', () => {
 
         /* Once mocked, any code that calls require('nodemailer')
         will get our nodemailerMock */
-        mockery.registerMock('nodemailer', nodemailerMock)
+        mockery.registerMock('nodemailer', nodemailerMock);
 
         models.sequelize.sync().then(function () {
             done();
@@ -46,6 +46,7 @@ describe('Process: emailProcess', () => {
     });
 
     it('Should set SMS field properly after SMS sent', async function () {
+        // Arrange
         saveUsers([{
             IsNew: true,
             FirstName: 'Jane',

@@ -29,7 +29,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // default port
-app.listen(config.import.port);
+const server =app.listen(config.import.port);
+module.exports = server
 
 app.get('/alive', function handleAlive(req, res) {
     res.send('yes');
@@ -39,7 +40,7 @@ app.get('/alive', function handleAlive(req, res) {
  * WebHook for form A
  */
 app.post('/userRegistered', function handleReceiveResults(req, res) {
-    log("Got results!");
+    log("Got /userRegistered results!");
     var answers = req.body.form_response.answers;
 
     // see https://developer.typeform.com/webhooks/example-response/
@@ -55,14 +56,14 @@ app.post('/userRegistered', function handleReceiveResults(req, res) {
 
     //TODO ensure uniqueness here or later wenn sending coin to accounts?
 
-    res.send('OK', 200);
+    res.status(200)
 });
 
 /**
  * WebHook for form B
  */
 app.post('/validateEmail', function handleReceiveResults(req, res) {
-    log("Got results!");
+    log("Got /validateEmail results!");
     var answers = req.body.form_response.answers;
 
     const emailKey = answers[0].text;
@@ -76,25 +77,26 @@ app.post('/validateEmail', function handleReceiveResults(req, res) {
         },
         limit: 1
     }).then(users => {
-        const user = users[0];
+        if (users && users[0]) {
+            const user = users[0];
 
-        // set field
-        user.EmailValidated = true;
-        user.save().then(() => {
-            const subject = 'Stutz coin: email validated';
-            sendEmail(user, 'email-validated.pug', subject).then((success) => {
-            });
-        })
+            // set field
+            user.EmailValidated = true;
+            user.save().then(() => {
+                const subject = 'Stutz coin: email validated';
+                sendEmail(user, 'email-validated.pug', subject).then((success) => {
+                });
+            })
+        }
     });
-
-    res.send('OK', 200);
+    res.status(200)
 });
 
 /**
  * WebHook for form C
  */
 app.post('/validatePhone', function handleReceiveResults(req, res) {
-    log("Got results!");
+    log("Got /validatePhone results!");
     var answers = req.body.form_response.answers;
 
     // see https://developer.typeform.com/webhooks/example-response/
@@ -109,16 +111,18 @@ app.post('/validatePhone', function handleReceiveResults(req, res) {
         },
         limit: 1
     }).then(users => {
-        const user = users[0];
+        if (users && users[0]) {
+            const user = users[0];
 
-        // set field
-        user.PhoneValidated = true;
-        user.save().then(() => {
-            const subject = 'Stutz coin: registration completed';
-            sendEmail(user, 'registration-completed.pug', subject).then((success) => {
-            });
-        })
+            // set field
+            user.PhoneValidated = true;
+            user.save().then(() => {
+                const subject = 'Stutz coin: registration completed';
+                sendEmail(user, 'registration-completed.pug', subject).then((success) => {
+                });
+            })
+        }
     });
 
-    res.send('OK', 200);
+    res.status(200)
 });
