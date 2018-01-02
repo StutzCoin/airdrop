@@ -34,6 +34,10 @@ export async function check() {
 
                     if (user.EMailValid && user.PhoneValid && user.WalletIdValid) {
                         user.IsNew = false;
+                    } else {
+                        if (user.EMailValid) {
+                            //TODO send an email to user with error message
+                        }
                     }
 
                     user.save().then(() => {
