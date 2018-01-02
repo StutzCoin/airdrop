@@ -9,13 +9,7 @@ const config = require('../../config/config.js')[env];
 
 import {sendSMS} from '../modules/sendSMS';
 
-const min = 10000;
-const max = 99999;
-
-//TODO replace with UUID to avoid brute force?
-function getRandomNumber() {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const uuidv5 = require('uuid/v5');
 
 //TODO use mocking instead of unit test boolean
 export async function sms(unitTest = false) {
@@ -31,11 +25,12 @@ export async function sms(unitTest = false) {
             logger.log('info', 'Found ' + users.length + ' users to process.');
             users.forEach(user => {
                 // Generate unique number valid 15 minutes
-                user.SmsKey = getRandomNumber();
+                user.SmsKey = uuidv5(config.coin.home, uuidv5.URL);
                 user.SmsKeyValidTo = new Date() + duration.minutes(config.sms.expireInMinutes);
 
                 // TODO translations, use template engine?
-                const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' please enter code Here: ' + config.checkCodeUrl + ' to complete airdrop registration.';
+                const url = config.sms.formUrl + '?key=' + user.SmsKey;  //use type-form hidden fields
+                const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' please visit url: ' + url + ' to complete airdrop registration.';
 
                 try {
                     if (!unitTest) {
@@ -43,8 +38,10 @@ export async function sms(unitTest = false) {
                     }
                     user.SmsSentDate = new Date();
                     user.SmsSent = true;
-                    user.save();
-                    logger.log('audit', 'SMS code sent for user ' + user.Name);
+                    user.save().then( () => {
+                        resolve(true);
+                        logger.log('audit', 'SMS code sent for user ' + user.Name);
+                    });
                 }
                 catch (err) {
                     // TODO handle error
@@ -52,10 +49,11 @@ export async function sms(unitTest = false) {
                     // information in the error parameter of the callback. 400-level errors are normal during API operation
                     // ("Invalid number", "Cannot deliver SMS to that number", for example) and should be handled appropriately
                     logger.log('error', err);
+                    reject(err);
 
                 }
             });
-            resolve(true);
+
         }).catch(err => {
             logger.log('error', err);
             reject(err);

@@ -20,13 +20,15 @@ module.exports = {
             expireInMinutes: 15,
             formUrl: "https://cdricwalter.typeform.com/to/RNvI6l",
         },
-        checkCodeUrl: 'www.todo',
         email: {
             from: "stutzbot@gmail.com",
             user: "stutz@gmail.com",
             password: "any",
             expireInMinutes: 15,
             formUrl: "https://cdricwalter.typeform.com/to/mLte7Q",
+        },
+        coin: {
+            home: "'http://xxxxxxx.com/"
         }
     },
     test: {

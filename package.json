@@ -57,6 +57,7 @@
     "chai": "^4.1.2",
     "chai-string": "^1.4.0",
     "chai-bignumber": "^2.0.2",
+    "chai-uuid": "^1.0.6",
     "gulp": "^3.9.1",
     "gulp-pug": "^3.3.0",
     "json-server": "^0.12.1",

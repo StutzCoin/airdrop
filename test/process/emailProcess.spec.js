@@ -10,6 +10,9 @@ import {saveUsers, truncateUsers, getFirstUser} from '../helpers/user';
 
 import {expect} from 'chai';
 
+const chai = require("chai");
+chai.use(require('chai-uuid'));
+
 describe('Process: emailProcess', () => {
 
     before(done => {
@@ -63,7 +66,9 @@ describe('Process: emailProcess', () => {
         let user = await getFirstUser();
 
         expect(user).to.not.be.null;
-        expect(Number(user.EmailKey)).to.satisfy(Number.isInteger);
+
+        expect(user.EmailKey).to.be.a.uuid('v5');
+
         expect(user.EmailValidTo).to.not.be.null;
 
         // get the array of emails we sent

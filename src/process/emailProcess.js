@@ -7,13 +7,7 @@ import {duration} from '../modules/time';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
-const min = 10000;
-const max = 99999;
-
-//TODO replace with UUID to avoid brute force? number should be unique to update right user
-function getRandomNumber() {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const uuidv5 = require('uuid/v5');
 
 async function renderEmailContent(user, template) {
     try {
@@ -26,7 +20,7 @@ async function renderEmailContent(user, template) {
             lastName: user.LastName,
             EmailKey: user.EmailKey,
             EmailKeyValidTo: user.EmailKeyValidTo,
-            EmailValidationUrl: user.checkCodeUrl
+            EmailValidationUrl: config.email.formUrl + '?key=' + user.EmailKey //use type-form hidden fields
         }));
 
         return html;
@@ -48,13 +42,12 @@ export async function email() {
 
             logger.log('info', 'Found ' + users.length + ' users to process.');
             users.forEach(user => {
+                user.EmailKey = uuidv5(config.coin.home, uuidv5.URL);
+                user.EmailKeyValidTo = new Date() + duration.minutes(config.email.expireInMinutes);
 
                 // TODO translations see https://www.npmjs.com/package/gulp-i18n-pug
                 const content = renderEmailContent(user, 'email.pug');
                 const subject = 'Stutz email validation code (valid 15 min)';
-
-                user.EmailKey = getRandomNumber();
-                user.EmailKeyValidTo = new Date() + duration.minutes(config.email.expireInMinutes);
 
                 const mailOptions = {
                     from: config.email.from,

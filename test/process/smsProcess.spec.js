@@ -6,6 +6,9 @@ import {saveUsers, truncateUsers, getFirstUser} from '../helpers/user';
 
 import {expect} from 'chai';
 
+const chai = require("chai");
+chai.use(require('chai-uuid'));
+
 describe('Process: smsProcess', () => {
 
     before( done => {
@@ -37,7 +40,8 @@ describe('Process: smsProcess', () => {
 
         // Assert
         let user = await getFirstUser();
-        expect(Number(user.SmsKey)).to.satisfy(Number.isInteger);
+        expect(user.SmsKey).to.be.a.uuid('v5');
+
         expect(user.SmsKeyValidTo).to.not.be.null;
         expect(user.SmsSentDate).to.not.be.null;
         expect(user.SmsSent).to.be.equal(true);
