@@ -38,9 +38,10 @@ export async function sms(unitTest = false) {
                     }
                     user.SmsSentDate = new Date();
                     user.SmsSent = true;
+
                     user.save().then( () => {
-                        resolve(true);
                         logger.log('audit', 'SMS code sent for user ' + user.Name);
+                        resolve(true);
                     });
                 }
                 catch (err) {
@@ -50,7 +51,6 @@ export async function sms(unitTest = false) {
                     // ("Invalid number", "Cannot deliver SMS to that number", for example) and should be handled appropriately
                     logger.log('error', err);
                     reject(err);
-
                 }
             });
 

@@ -33,9 +33,17 @@ export async function email() {
                         user.EmailSentDate = new Date();
 
                         user.save().then(() => {
-                            resolve(true);
+                            resolve();
+                        }).catch(err => {
+                            logger.log('error', err);
+                            reject(err);
                         });
+                    } else {
+                        reject();
                     }
+                }).catch(err => {
+                    logger.log('error', err);
+                    reject(err);
                 });
             });
         }).catch(err => {

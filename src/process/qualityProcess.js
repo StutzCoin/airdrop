@@ -41,11 +41,13 @@ export async function check() {
                     }
 
                     user.save().then(() => {
-
+                        resolve(true);
+                    }).catch(err => {
+                        logger.log('error', err);
+                        reject(err);
                     });
                 });
             }
-            resolve(true);
         }).catch(err => {
             logger.log('error', err);
             reject(err);
