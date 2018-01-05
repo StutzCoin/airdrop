@@ -30,6 +30,7 @@ describe('Process: smsProcess', () => {
             LastName: '',
             WalletId: '',
             Phone: '+41790000000',
+
             // require by process
             EmailValidated: true,
             PhoneValid: true,

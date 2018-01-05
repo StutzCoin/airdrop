@@ -21,9 +21,14 @@ module.exports = {
             formUrl: "https://cdricwalter.typeform.com/to/RNvI6l",
         },
         email: {
+            host: 'localhost',
+            port: 425,
+            secure: false,
+            auth: {
+                user: 'stutz@gmail.com',
+                pass: 'xxxxxxxxxx'
+            },
             from: "stutzbot@gmail.com",
-            user: "stutz@gmail.com",
-            password: "any",
             expireInMinutes: 15,
             formUrl: "https://cdricwalter.typeform.com/to/mLte7Q",
         },

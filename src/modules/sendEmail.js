@@ -5,13 +5,12 @@ import logger from '../modules/logger';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
+const pug = require('pug');
+
 export async function renderEmailContent(user, template) {
-    try {
-        // require absolute path, don't remove __dirname
-        const html = await pug.renderFile(__dirname + '/../../templates/' + template, pug.runtime.merge({
-            filename: template,
-            compileDebug: false,
-            pretty: true,
+    // require absolute path, don't remove __dirname
+    const html = await pug.renderFile(__dirname + '/../../templates/' + template,
+        {
             // variables used in template
             firstName: user.FirstName,
             lastName: user.LastName,
@@ -19,20 +18,18 @@ export async function renderEmailContent(user, template) {
             email: user.Email,
             emailKeyValidTo: user.EmailKeyValidTo,
             emailValidationUrl: config.email.formUrl + '?key=' + user.EmailKey + '&firstname=' + user.FirstName + '&lastname=' + user.LastName//use type-form hidden fields
-        }));
+        }
+    );
 
-        return html;
-    }
-    catch (err) {
-        logger.log('error', 'while rendering email \'' + template + '\' html template for user ' + user.Name)
-    }
-}
+    return html;
+};
+
 
 export async function sendEmail(user, templateName, subject) {
+    const content = await renderEmailContent(user, templateName);
+
     return new Promise(function (resolve, reject) {
         // TODO translations see https://www.npmjs.com/package/gulp-i18n-pug
-        const content = renderEmailContent(user, templateName);
-
         const mailOptions = {
             from: config.email.from,
             to: user.EMail,
@@ -40,13 +37,14 @@ export async function sendEmail(user, templateName, subject) {
             text: content
         };
 
-        const nodemailer = require('nodemailer');
-        //  TODO only support gmail for now
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
+        const nodeMailer = require('nodemailer');
+        const transporter = nodeMailer.createTransport({
+            host: config.email.host,
+            port: config.email.port,
+            secure: config.email.secure, // true for 465, false for other ports
             auth: {
-                user: config.email.user,
-                pass: config.email.password
+                user: config.email.auth.user,
+                pass: config.email.auth.pass
             }
         });
 

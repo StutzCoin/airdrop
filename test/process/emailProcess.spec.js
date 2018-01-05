@@ -45,7 +45,7 @@ describe('Process: emailProcess', () => {
         mockery.disable();
     });
 
-    it('Should set SMS field properly after SMS sent', async () => {
+    it('Should email field properly after email sent', async () => {
         // Arrange
         await saveUsers([{
             IsNew: true,
