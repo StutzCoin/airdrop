@@ -6,10 +6,10 @@
 
 1. Users use an online "Form A" for entering their Name, First Name, Email, Phone number and LTC address. 
    * Data are written to a Google Sheet tables for auditing (typeform configuration)
-   * Data are synchronized to this backend module databaseusing typeform webhook (and nodejs sequelize ORM + any database).
+   * Data are synchronized to this backend module database using typeform webhook (and nodejs sequelize ORM + any database).
    
 2. System regularly validate user data in database
-   * Email valid, swiss phone number, LTC adress valid (mainnet not testnet)
+   * Email valid, swiss phone number, LTC address valid (mainnet not testnet)
    
 3. System regularly check for validated user data. For validating email address, it send: 
    * an email link with expiry time that redirect user to another "Form B" (config.email.formUrl). 
@@ -34,10 +34,24 @@ Phone Number [     ] |                  |                       |               
 LTC Address  [     ] |                  |                       |                |                      |
 ```
 
-## typeform.com
+## www.twilio.com
+This module send SMS using Twilio: a Cloud communications platform for building SMS, Voice & Messaging applications on an API built for global scale. 
+Price: pay as you use Starting at $0.0075 / SMS
+
+You can configure Twilio in config.js
+```
+sms: {
+    accountSid: 'xxxxx',
+    authToken: 'xxxxx',
+    number: 'xxxxx',
+},
+```
+
+## www.typeform.com
 This module 
 * require typeform.com pro features "hidden fields" (https://www.typeform.com/help/hidden-fields/)
 * It use webhook (https://www.typeform.com/help/webhooks/) to get data as soon as forms are completed.
+Price: 25$ / Month
 
 ### Import
 
