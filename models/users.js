@@ -1,4 +1,6 @@
 'use strict';
+const Version = require('sequelize-version');
+
 module.exports = (sequelize, DataTypes) => {
     var Users = sequelize.define('Users', {
         FirstName: {
@@ -69,6 +71,9 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: true,
         },
     });
+
+    // audit tables
+    new Version(Users);
 
     return Users;
 };
