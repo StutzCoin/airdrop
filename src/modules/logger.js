@@ -7,25 +7,37 @@ const util = require('util');
 function getLogger() {
 
     winston.setLevels({
-        info: 1,
-        warning: 2,
+        emerg: 0,
+        alert: 1,
+        crit: 2,
         error: 3,
-        audit: 4
+        warning: 4,
+        audit: 5,
+        info: 6,
+        debug: 7
     });
 
     winston.addColors({
-        info: 'blue',
+        emerg: 'red',
+        alert: 'yellow',
+        crit: 'red',
         error: 'red',
-        warning: 'yellow',
-        audit: 'green'
+        warning: 'red',
+        audit: 'yellow',
+        info: 'green',
+        debug: 'gray'
     });
 
     const logger = new (winston.Logger)({
         levels: {
-            audit: 0,
-            info: 1,
-            warning: 2,
-            error: 3
+            emerg: 0,
+            alert: 1,
+            crit: 2,
+            error: 3,
+            warning: 4,
+            audit: 5,
+            info: 6,
+            debug: 7
         },
         transports: [
             new (winston.transports.Console)({
