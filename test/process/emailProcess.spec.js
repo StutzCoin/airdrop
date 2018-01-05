@@ -65,19 +65,22 @@ describe('Process: emailProcess', () => {
 
         // Assert
         let user = await getFirstUser();
-
         expect(user).to.not.be.null;
 
+        // database
         expect(user.EmailKey).to.be.a.uuid('v5');
-
         expect(user.EmailValidTo).to.not.be.null;
+        expect(user.EmailSentDate).to.not.be.null;
+        expect(user.EmailSent).to.be.equal(true);
 
         // get the array of emails we sent
         const sentMail = nodemailerMock.mock.sentMail();
         // we should have sent one email
         sentMail.length.should.be.exactly(1);
 
-        expect(user.EmailSentDate).to.not.be.null;
-        expect(user.EmailSent).to.be.equal(true);
+        const Sent = sentMail[0];
+        expect(Sent.from).to.be.equal('stutzbot@gmail.com');
+        expect(Sent.subject).to.be.equal('Stutz email validation code (valid 15 min)');
+        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title></title></head><body><h1>Thanks for registering for Stutz Airdrop</h1><p>Dear Jane </p><p>Your email validation code is 5f0d1374-6df3-5217-9ecc-33dd90ba0828 valid up to 473040000 please enter code <a href="https://cdricwalter.typeform.com/to/mLte7Q?key=5f0d1374-6df3-5217-9ecc-33dd90ba0828&amp;firstname=Jane&amp;lastname=">Here</a> to complete airdrop registration.</p></body></html>');
     });
 });

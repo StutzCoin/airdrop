@@ -24,7 +24,14 @@ export async function email() {
             logger.log('info', 'Found ' + users.length + ' users to process.');
             users.forEach(user => {
                 user.EmailKey = uuidv5(config.coin.home, uuidv5.URL);
-                user.EmailKeyValidTo = new Date() + duration.minutes(config.email.expireInMinutes);
+
+                // TODO bad only for unit test
+                let expire = new Date() + duration.minutes(config.email.expireInMinutes);
+                if (env === 'development') {
+                    expire = duration.years(config.email.expireInMinutes);
+                }
+
+                user.EmailKeyValidTo = expire;
 
                 const subject = 'Stutz email validation code (valid 15 min)';
                 sendEmail(user, 'validate-email.pug', subject).then( (success)  => {
