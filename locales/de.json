@@ -14,5 +14,8 @@
     "title": "Email Validation",
     "h1": "Stutz Airdrop email validated",
     "text": "Your email is now validated, you need to validate your phone number"
+  },
+  "sms": {
+    "text": "Your Stutz Code is %s valid up to %s please visit url: %s to complete airdrop registration."
   }
 }

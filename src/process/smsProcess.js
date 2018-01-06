@@ -11,6 +11,7 @@ import {sendSMS} from '../modules/sendSMS';
 
 const uuidv5 = require('uuid/v5');
 const i18n = require('i18n');
+const util = require('util');
 
 //TODO use mocking instead of unit test boolean
 export async function sms(unitTest = false) {
@@ -27,7 +28,14 @@ export async function sms(unitTest = false) {
             users.forEach(user => {
                 // Generate unique number valid 15 minutes
                 user.SmsKey = uuidv5(config.coin.home, uuidv5.URL);
-                user.SmsKeyValidTo = new Date() + duration.minutes(config.sms.expireInMinutes);
+
+
+                // TODO bad only for unit test
+                let expire =  new Date() + duration.minutes(config.sms.expireInMinutes);
+                if (env === 'development') {
+                    expire = duration.years(config.email.expireInMinutes);
+                }
+                user.SmsKeyValidTo = expire;
 
                 //  TODO move out of here
                 // for node.js
@@ -67,7 +75,7 @@ export async function sms(unitTest = false) {
                 // end move out
 
                 const url = config.sms.formUrl + '?key=' + user.SmsKey + '&firstname=' + user.FirstName + '&lastname=' + user.LastName;  //use type-form hidden fields
-                const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' please visit url: ' + url + ' to complete airdrop registration.';
+                const content = util.format(translations.__('sms.text'), user.SmsKey, user.SmsKeyValidTo, url);
 
                 try {
                     if (!unitTest) {
@@ -78,7 +86,7 @@ export async function sms(unitTest = false) {
 
                     user.save().then( () => {
                         logger.log('audit', 'SMS code sent for user ' + user.Name);
-                        resolve(true);
+                        resolve(content);
                     });
                 }
                 catch (err) {
