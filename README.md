@@ -68,13 +68,22 @@ e.g.
 ```
 yarn run audit jane doe
 ```
-### Import
 
-#### start server side webhook
+# Installation
+
 ```
+git clone https://github.com/StutzCoin/airdrop.git
+npm install pm2 -g
+
+# only once
+node run bin/init-database.js 
+
+# start webhook process, listen on port 3000, see config.js
 node src/process/importProcess.js
-```
 
+# start all recurring processes
+TODO pm2
+```
 #### testing
 Simulate Typeform calling back your server
 start server side webhook and see how to simulate call with curl from test/fixtures/readme.md
