@@ -35,10 +35,10 @@ async function assertPhoneInvalidEmail(locale = 'en') {
     expect(Sent.from).to.be.equal('stutzbot@gmail.com');
     expect(Sent.subject).to.be.equal('Your phone is not valid');
     if (locale === 'en') {
-        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Your phone is not valid</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
+        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Your phone is not valid</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> - <a href="https://www.facebook.com/STUTZ-379426659150116">Facebook</a> - <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
     }
     if (locale === 'fr') {
-        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Vitre numero de telephone n\'est pas valide.</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
+        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Vitre numero de telephone n\'est pas valide.</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> - <a href="https://www.facebook.com/STUTZ-379426659150116">Facebook</a> - <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
     }
 
 }
