@@ -69,7 +69,9 @@ e.g.
 yarn run audit jane doe
 ```
 
-# Installation
+# Installation of module
+
+We use PM2, see pm2.help file
 
 ```
 git clone https://github.com/StutzCoin/airdrop.git
@@ -81,8 +83,20 @@ node run bin/init-database.js
 # start webhook process, listen on port 3000, see config.js
 node src/process/importProcess.js
 
-# start all recurring processes
-TODO pm2
+# start all recurring processes, run every 30 s
+pm2 start  bin/send-email.js --restart-delay 30000
+pm2 start  bin/send-sms.js --restart-delay 30000
+pm2 start  bin/check-data.js --restart-delay 30000
+
+# list processes
+pm2 list
+
+# stop processes
+pm2 kill
+
+# view logs
+pm2 log 0
+
 ```
 #### testing
 Simulate Typeform calling back your server

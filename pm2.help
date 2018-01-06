@@ -1,0 +1,165 @@
+
+  Usage: pm2 [cmd] app
+
+
+  Options:
+
+    -V, --version                    output the version number
+    -v --version                     get version
+    -s --silent                      hide all messages
+    -m --mini-list                   display a compacted list without formatting
+    -f --force                       force actions
+    --disable-logs                   do not write logs
+    -n --name <name>                 set a <name> for script
+    -i --instances <number>          launch [number] instances (for networked app)(load balanced)
+    --parallel <number>              number of parallel actions (for restart/reload)
+    -l --log [path]                  specify entire log file (error and out are both included)
+    -o --output <path>               specify out log file
+    -e --error <path>                specify error log file
+    -p --pid <pid>                   specify pid file
+    -k --kill-timeout <delay>        delay before sending final SIGKILL signal to process
+    --listen-timeout <delay>         listen timeout on application reload
+    --max-memory-restart <memory>    specify max memory amount used to autorestart (in octet or use syntax like 100M)
+    --restart-delay <delay>          specify a delay between restarts (in milliseconds)
+    --env <environment_name>         specify environment to get specific env variables (for JSON declaration)
+    --log-type <type>                specify log output style (raw by default, json optional)
+    -x --execute-command             execute a program using fork system
+    --max-restarts [count]           only restart the script COUNT times
+    -u --user <username>             define user when generating startup script
+    --uid <uid>                      run target script with <uid> rights
+    --gid <gid>                      run target script with <gid> rights
+    --cwd <path>                     run target script as <username>
+    --hp <home path>                 define home path when generating startup script
+    --wait-ip                        override systemd script to wait for full internet connectivity to launch pm2
+    --service-name <name>            define service name when generating startup script
+    -c --cron <cron_pattern>         restart a running process based on a cron pattern
+    -w --write                       write configuration in local folder
+    --interpreter <interpreter>      the interpreter pm2 should use for executing app (bash, python...)
+    --interpreter-args <arguments>   interpret options (alias of --node-args)
+    --log-date-format <date format>  add custom prefix timestamp to logs
+    --no-daemon                      run pm2 daemon in the foreground if it doesn't exist already (default: true)
+    -a --update-env                  update environment on restart/reload (-a <=> apply)
+    --source-map-support             force source map support
+    --only <application-name>        with json declaration, allow to only act on one application
+    --disable-source-map-support     force source map support
+    --wait-ready                     ask pm2 to wait for ready event from your app
+    --merge-logs                     merge logs from different instances but keep error and out separated
+    --watch [paths]                  watch application folder for changes (default: )
+    --ignore-watch <folders|files>   folder/files to be ignored watching, should be a specific name or regex - e.g. --ignore-watch="test node_modules "some scripts""
+    --node-args <node_args>          space delimited arguments to pass to node in cluster mode - e.g. --node-args="--debug=7001 --trace-deprecation"
+    --no-color                       skip colors (default: true)
+    --no-vizion                      start an app without vizion feature (versioning control) (default: true)
+    --no-autorestart                 start an app without automatic restart (default: true)
+    --no-treekill                    Only kill the main process, not detached children (default: true)
+    --no-pmx                         start an app without pmx (default: true)
+    --no-automation                  start an app without pmx (default: true)
+    --trace                          enable transaction tracing with km
+    --disable-trace                  disable transaction tracing with km
+    --attach                         attach logging after your start/restart/stop/reload
+    -h, --help                       output usage information
+
+
+  Commands:
+
+    start [options] <file|json|stdin|app_name|pm_id...>  start and daemonize an app
+    trigger <proc_name> <action_name> [params]           deploy your json
+    deploy <file|environment>                            deploy your json
+    startOrRestart <json>                                start or restart JSON file
+    startOrReload <json>                                 start or gracefully reload JSON file
+    startOrGracefulReload <json>                         start or gracefully reload JSON file
+    stop [options] <id|name|all|json|stdin...>           stop a process (to start it again, do pm2 restart <app>)
+    restart [options] <id|name|all|json|stdin...>        restart a process
+    scale <app_name> <number>                            scale up/down a process in cluster mode depending on total_number param
+    snapshot                                             snapshot PM2 memory
+    profile <command>                                    profile CPU
+    reload <name|all>                                    reload processes (note that its for app using HTTP/HTTPS)
+    gracefulReload <name|all>                            gracefully reload a process. Send a "shutdown" message to close all connections.
+    id <name>                                            get process id by name
+    delete <name|id|script|all|json|stdin...>            stop and delete a process from pm2 process list
+    sendSignal <signal> <pm2_id|name>                    send a system signal to the target process
+    ping                                                 ping pm2 daemon - if not up it will launch it
+    updatePM2                                            update in-memory PM2 with local PM2
+    update                                               (alias) update in-memory PM2 with local PM2
+    install|module:install [options] <module|git:/>      install or update a module and run it forever
+    module:update <module|git:/>                         update a module and run it forever
+    module:generate [app_name]                           Generate a sample module in current folder
+    uninstall|module:uninstall <module>                  stop and uninstall a module
+    publish|module:publish                               Publish the module you are currently on
+    set [key] [value]                                    sets the specified config <key> <value>
+    multiset <value>                                     multiset eg "key1 val1 key2 val2
+    get [key]                                            get value for <key>
+    conf [key] [value]                                   get / set module config values
+    config <key> [value]                                 get / set module config values
+    unset <key>                                          clears the specified config <key>
+    report                                               give a full pm2 report for https://github.com/Unitech/pm2/issues
+    link|interact [options] [secret] [public] [name]     linking action to keymetrics.io - command can be stop|info|delete|restart
+    unlink                                               linking action to keymetrics.io - command can be stop|info|delete|restart
+    unmonitor [name]                                     unmonitor target process
+    monitor [name]                                       monitor target process
+    open                                                 open dashboard in browser
+    register                                             create an account on keymetrics
+    login                                                login to keymetrics and link current PM2
+    web                                                  launch a health API on 0.0.0.0:9615
+    dump|save                                            dump all processes for resurrecting them later
+    send <pm_id> <line>                                  send stdin to <pm_id>
+    attach <pm_id> [comman]                              attach stdin/stdout to application identified by <pm_id>
+    resurrect                                            resurrect previously dumped processes
+    unstartup [platform]                                 disable and clear auto startup - [platform]=systemd,upstart,launchd,rcd
+    startup [platform]                                   setup script for pm2 at boot - [platform]=systemd,upstart,launchd,rcd
+    logrotate                                            copy default logrotate configuration
+    ecosystem|generate [mode]                            generate a process conf file. (mode = null or simple)
+    reset <name|id|all>                                  reset counters for process
+    describe <id>                                        describe all parameters of a process id
+    desc <id>                                            (alias) describe all parameters of a process id
+    info <id>                                            (alias) describe all parameters of a process id
+    show <id>                                            (alias) describe all parameters of a process id
+    list|ls [options]                                    list all processes
+    l                                                    (alias) list all processes
+    ps                                                   (alias) list all processes
+    status                                               (alias) list all processes
+    jlist                                                list all processes in JSON format
+    prettylist                                           print json in a prettified JSON
+    monit                                                launch termcaps monitoring
+    imonit                                               launch legacy termcaps monitoring
+    dashboard|dash                                       launch dashboard with monitoring and logs
+    flush                                                flush logs
+    reloadLogs                                           reload all logs
+    logs [options] [id|name]                             stream logs file. Default stream all logs
+    kill                                                 kill daemon
+    pull <name> [commit_id]                              updates repository for a given app
+    forward <name>                                       updates repository to the next commit for a given app
+    backward <name>                                      downgrades repository to the previous commit for a given app
+    gc                                                   force PM2 to trigger garbage collection
+    deepUpdate                                           performs a deep update of PM2
+    serve|expose [path] [port]                           serve a directory over http via port
+    *                                                  
+  Basic Examples:
+
+    Start an app using all CPUs available + set a name :
+    $ pm2 start app.js -i 0 --name "api"
+
+    Restart the previous app launched, by name :
+    $ pm2 restart api
+
+    Stop the app :
+    $ pm2 stop api
+
+    Restart the app that is stopped :
+    $ pm2 restart api
+
+    Remove the app from the process list :
+    $ pm2 delete api
+
+    Kill daemon pm2 :
+    $ pm2 kill
+
+    Update pm2 :
+    $ npm install pm2@latest -g ; pm2 update
+
+    More examples in https://github.com/Unitech/pm2#usagefeatures
+
+  Deployment help:
+
+    $ pm2 deploy help
+
+

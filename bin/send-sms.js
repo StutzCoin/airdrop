@@ -1,12 +1,5 @@
 #!/usr/bin/env node
-import {importAll} from '../src/process/sendEmailProcess';
-import logger from '../src/modules/logger';
+const SmsProcess = require('../src/process/smsProcess');
+const smsProcess = new SmsProcess();
 
-sendEMail().then((count) => {
-        logger.log('info', 'send sms process successful: ' + count);
-        // TODO implement SMS process
-    },
-    (err) => {
-        logger.log('error', 'send sms process  failed: ' + err);
-    };
-);
+smsProcess.sms();
