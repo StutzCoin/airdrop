@@ -3,7 +3,7 @@ const i18n = require('i18n');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
-function getTranslations() {
+function translations() {
     var translations = {};
     i18n.configure({
         locales: config.locales,
@@ -23,6 +23,4 @@ function getTranslations() {
     return translations;
 }
 
-const translations = getTranslations();
-
-export default translations;
+module.exports = translations;

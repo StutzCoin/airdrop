@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 
 const models = require('../../models/index');
-import logger from '../modules/logger';
+
+const Logger = require('../modules/logger');
+const logger = new Logger();
+
 import {duration} from '../modules/time';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
 import sendSMS from '../modules/sendSMS';
-import translations from '../../src/modules/i18n';
+
+const Translations = require('../../src/modules/i18n');
+const translations = new Translations();
 
 const uuidv5 = require('uuid/v5');
 const i18n = require('i18n');

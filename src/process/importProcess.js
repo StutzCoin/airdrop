@@ -11,6 +11,9 @@ const bodyParser = require('body-parser');
 var util = require('util');
 import {sendEmail} from '../../src/modules/sendEmail';
 
+const Logger = require('../modules/logger');
+const logger = new Logger();
+
 // Simple way of having nice logs
 function log(message) {
     var prefix = (new Date).toISOString();

@@ -2,10 +2,14 @@
 
 const models = require('../../models/index');
 
-import logger from '../modules/logger';
+const Logger = require('../modules/logger');
+const logger = new Logger();
+
 import {duration} from '../modules/time';
 import {sendEmail} from '../../src/modules/sendEmail';
-import translations from '../../src/modules/i18n';
+
+const Translations = require('../../src/modules/i18n');
+const translations = new Translations();
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];

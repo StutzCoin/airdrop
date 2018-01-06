@@ -4,7 +4,7 @@ const winston = require('winston');
 const moment = require('moment');
 const util = require('util');
 
-function getLogger() {
+function logger() {
 
     winston.setLevels({
         emerg: 0,
@@ -78,6 +78,4 @@ function getLogger() {
     return logger;
 }
 
-const logger = getLogger();
-
-export default logger;
+module.exports = logger;

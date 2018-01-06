@@ -7,7 +7,8 @@ const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance()
 
 const WAValidator = require('wallet-address-validator');
 
-import logger from '../modules/logger';
+const Logger = require('../modules/logger');
+const logger = new Logger();
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
@@ -15,7 +16,9 @@ const config = require('../../config/config.js')[env];
 const i18n = require('i18n');
 
 import {sendEmail} from '../../src/modules/sendEmail';
-import translations from '../../src/modules/i18n';
+
+const Translations = require('../../src/modules/i18n');
+const translations = new Translations();
 
 //  TODO move out of here
 // for PUG
