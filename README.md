@@ -62,6 +62,12 @@ Price: 25$ / Month
 * if phone is not from Switzerland and email is valid, an error email is sent to user 'error-phone.pug'
 * if wallet is invalid and email is valid, an error email is sent to user 'error-wallet.pug'
 
+# Audit / Support
+You can see audit logs of a single user like this `yarn run audit FirstName LastName`
+e.g.
+```
+yarn run audit jane doe
+```
 ### Import
 
 #### start server side webhook
