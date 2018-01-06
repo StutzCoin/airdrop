@@ -23,6 +23,11 @@
         "subject": "Your phone is not valid",
         "title": "Your phone is not valid",
         "text": "Either your phone number is invalid or not a swiss valid number. Please submit again your data."
+      },
+      "wallet": {
+        "subject": "Your wallet is not valid",
+        "title": "Your wallet is not valid",
+        "text": "Your wallet is not valid, please provide a new one. Please submit again your data."
       }
     }
 }

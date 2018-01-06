@@ -1,4 +1,5 @@
 const i18n = require('i18n');
+
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 

@@ -12,8 +12,29 @@ import logger from '../modules/logger';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
+const i18n = require('i18n');
+
 import {sendEmail} from '../../src/modules/sendEmail';
 import translations from '../../src/modules/i18n';
+
+//  TODO move out of here
+// for PUG
+i18n.configure({
+    locales: config.locales,
+    directory: __dirname + '/../../locales',
+    autoReload: true,
+    logDebugFn: function (msg) {
+        logger.log('debug', msg);
+    },
+    logErrorFn: function (msg) {
+        logger.log('error', msg);
+    },
+    register: global,
+    syncFiles: true,
+    objectNotation: true
+});
+
+// end move out
 
 export async function check() {
     logger.log('info', 'Quality data check started');
@@ -28,6 +49,7 @@ export async function check() {
             if (users.length > 0) {
                 users.forEach(user => {
                     translations.setLocale(user.Locale);
+                    i18n.setLocale(user.Locale);
 
                     user.EMailValid = validator.validate(user.EMail);
 
@@ -43,6 +65,28 @@ export async function check() {
                         if (!user.PhoneValid && user.EMailValid) {
                             const subject = translations.__('errors.phone.subject');
                             sendEmail(user, 'error-phone.pug', subject).then( (success)  => {
+                                if (success) {
+                                    user.EmailSent = true;
+                                    user.EmailSentDate = new Date();
+
+                                    user.save().then(() => {
+                                        resolve();
+                                    }).catch(err => {
+                                        logger.log('error', err);
+                                        reject(err);
+                                    });
+                                } else {
+                                    reject();
+                                }
+                            }).catch(err => {
+                                logger.log('error', err);
+                                reject(err);
+                            });
+                        }
+
+                        if (!user.WalletIdValid && user.EMailValid) {
+                            const subject = translations.__('errors.wallet.subject');
+                            sendEmail(user, 'error-wallet.pug', subject).then( (success)  => {
                                 if (success) {
                                     user.EmailSent = true;
                                     user.EmailSentDate = new Date();
