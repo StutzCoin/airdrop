@@ -63,16 +63,23 @@ export async function sms(unitTest = false) {
                 const content = util.format(translations.__('sms.text'), user.SmsKey, user.SmsKeyValidTo, url);
 
                 try {
+                    let success = true;
                     if (!unitTest) {
-                        sendSMS(user.Phone, content);
+                        sendSMS(user.Phone, content).then((error) => {
+                            if (error) {
+                                success = false;
+                            }
+                        });
                     }
-                    user.SmsSentDate = new Date();
-                    user.SmsSent = true;
+                    if (success) {
+                        user.SmsSentDate = new Date();
+                        user.SmsSent = true;
 
-                    user.save().then( () => {
-                        logger.log('audit', 'SMS code sent for user ' + user.Name);
-                        resolve(content);
-                    });
+                        user.save().then(() => {
+                            logger.log('audit', 'SMS code sent for user ' + user.Name);
+                            resolve(content);
+                        });
+                    }
                 }
                 catch (err) {
                     // TODO handle error

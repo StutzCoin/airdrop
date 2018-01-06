@@ -14,7 +14,7 @@ const client = new twilio(config.sms.accountSid, config.sms.authToken);
  * @param content
  * @returns {Promise<void>}
  */
-export async function sendSMS(to, content) {
+export default async function sendSMS(to, content) {
     return new Promise(function (resolve, reject) {
          client.messages.create({
             body: content,
