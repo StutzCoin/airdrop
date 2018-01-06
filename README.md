@@ -59,7 +59,8 @@ This module
 Price: 25$ / Month
 
 # Validations
-* if phone is now swiss and email is valid, an error email is sent to user 'error-phone.pug'
+* if phone is not from Switzerland and email is valid, an error email is sent to user 'error-phone.pug'
+* if wallet is invalid and email is valid, an error email is sent to user 'error-wallet.pug'
 
 ### Import
 
