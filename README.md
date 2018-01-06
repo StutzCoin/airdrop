@@ -34,6 +34,10 @@ Phone Number [     ] |                  |                       |               
 LTC Address  [     ] |                  |                       |                |                      |
 ```
 
+## email templates
+* are located in /templates and use PUG (also known as Jade)
+* translations are done using i18n, json file in /locales
+
 ## www.twilio.com
 This module send SMS using Twilio: a Cloud communications platform for building SMS, Voice & Messaging applications on an API built for global scale. 
 Price: pay as you use Starting at $0.0075 / SMS

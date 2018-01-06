@@ -37,7 +37,8 @@ module.exports = {
         },
         import: {
             port: 3000,
-        }
+        },
+        locales: ['en', 'de', 'fr', 'it'],
     },
     test: {
         dialect: "sqlite",

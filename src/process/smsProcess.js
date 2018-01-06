@@ -33,7 +33,7 @@ export async function sms(unitTest = false) {
                 // for node.js
                 var translations = {};
                 i18n.configure({
-                    locales: ['en', 'de', 'fr', 'it'],
+                    locales: config.locales,
                     directory: __dirname + '/../../locales',
                     autoReload: true,
                     logDebugFn: function (msg) {
@@ -50,7 +50,7 @@ export async function sms(unitTest = false) {
 
                 // for PUG
                 i18n.configure({
-                    locales: ['en', 'de', 'fr', 'it'],
+                    locales: config.locales,
                     directory: __dirname + '/../../locales',
                     autoReload: true,
                     logDebugFn: function (msg) {
