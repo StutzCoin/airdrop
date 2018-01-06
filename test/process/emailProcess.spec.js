@@ -2,7 +2,8 @@ const should = require('should');
 const mockery = require('mockery');
 const nodemailerMock = require('nodemailer-mock');
 
-import {email} from '../../src/process/emailProcess';
+const EmailProcess = require('../../src/process/emailProcess');
+const emailProcess = new EmailProcess();
 
 const models = require('../../models/index');
 
@@ -62,7 +63,7 @@ describe('Process: emailProcess', () => {
         }]);
 
         // Act
-        await email();
+        await emailProcess.email();
 
         // Assert
         let user = await getFirstUser();
@@ -103,7 +104,7 @@ describe('Process: emailProcess', () => {
         }]);
 
         // Act
-        await email();
+        await emailProcess.email();
 
         // Assert
         let user = await getFirstUser();

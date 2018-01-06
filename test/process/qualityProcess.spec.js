@@ -4,6 +4,9 @@ const nodemailerMock = require('nodemailer-mock');
 
 import {check} from '../../src/process/qualityProcess';
 
+const QualityProcess = require('../../src/process/qualityProcess');
+const qualityProcess = new QualityProcess();
+
 const models = require('../../models/index');
 
 import {saveUsers, truncateUsers} from '../helpers/user';
@@ -22,7 +25,7 @@ async function checkUserAndReturn(usersToSave) {
     await saveUsers(usersToSave);
 
     // Act
-    await check();
+    await qualityProcess.check();
 
     // Assert
     const users = await models.Users.findAll({

@@ -15,7 +15,8 @@ const config = require('../../config/config.js')[env];
 
 const i18n = require('i18n');
 
-import {sendEmail} from '../../src/modules/sendEmail';
+const SendEmail = require('../../src/modules/sendEmail');
+const sendEmail = new SendEmail();
 
 const Translations = require('../../src/modules/i18n');
 const translations = new Translations();
@@ -39,88 +40,93 @@ i18n.configure({
 
 // end move out
 
-export async function check() {
-    logger.log('info', 'Quality data check started');
-    return new Promise(function (resolve, reject) {
-        // Get all new person data
-        models.Users.findAll({
-            where: {
-                IsNew: true,
-            },
-            limit: config.readLimit
-        }).then(users => {
-            if (users.length > 0) {
-                users.forEach(user => {
-                    translations.setLocale(user.Locale);
-                    i18n.setLocale(user.Locale);
+function qualityProcess() {
 
-                    user.EMailValid = validator.validate(user.EMail);
+    this.check = async function check() {
+        logger.log('info', 'Quality data check started');
+        return new Promise(function (resolve, reject) {
+            // Get all new person data
+            models.Users.findAll({
+                where: {
+                    IsNew: true,
+                },
+                limit: config.readLimit
+            }).then(users => {
+                if (users.length > 0) {
+                    users.forEach(user => {
+                        translations.setLocale(user.Locale);
+                        i18n.setLocale(user.Locale);
 
-                    const phone_number = phoneUtil.parse(user.Phone, "CH");
+                        user.EMailValid = validator.validate(user.EMail);
 
-                    user.PhoneValid = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
+                        const phone_number = phoneUtil.parse(user.Phone, "CH");
 
-                    user.WalletIdValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
+                        user.PhoneValid = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
 
-                    if (user.EMailValid && user.PhoneValid && user.WalletIdValid) {
-                        user.IsNew = false;
-                    } else {
-                        if (!user.PhoneValid && user.EMailValid) {
-                            const subject = translations.__('errors.phone.subject');
-                            sendEmail(user, 'error-phone.pug', subject).then( (success)  => {
-                                if (success) {
-                                    user.EmailSent = true;
-                                    user.EmailSentDate = new Date();
+                        user.WalletIdValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
-                                    user.save().then(() => {
-                                        resolve();
-                                    }).catch(err => {
-                                        logger.log('error', err);
-                                        reject(err);
-                                    });
-                                } else {
-                                    reject();
-                                }
-                            }).catch(err => {
-                                logger.log('error', err);
-                                reject(err);
-                            });
+                        if (user.EMailValid && user.PhoneValid && user.WalletIdValid) {
+                            user.IsNew = false;
+                        } else {
+                            if (!user.PhoneValid && user.EMailValid) {
+                                const subject = translations.__('errors.phone.subject');
+                                sendEmail.sendEmail(user, 'error-phone.pug', subject).then((success) => {
+                                    if (success) {
+                                        user.EmailSent = true;
+                                        user.EmailSentDate = new Date();
+
+                                        user.save().then(() => {
+                                            resolve();
+                                        }).catch(err => {
+                                            logger.log('error', err);
+                                            reject(err);
+                                        });
+                                    } else {
+                                        reject();
+                                    }
+                                }).catch(err => {
+                                    logger.log('error', err);
+                                    reject(err);
+                                });
+                            }
+
+                            if (!user.WalletIdValid && user.EMailValid) {
+                                const subject = translations.__('errors.wallet.subject');
+                                sendEmail.sendEmail(user, 'error-wallet.pug', subject).then((success) => {
+                                    if (success) {
+                                        user.EmailSent = true;
+                                        user.EmailSentDate = new Date();
+
+                                        user.save().then(() => {
+                                            resolve();
+                                        }).catch(err => {
+                                            logger.log('error', err);
+                                            reject(err);
+                                        });
+                                    } else {
+                                        reject();
+                                    }
+                                }).catch(err => {
+                                    logger.log('error', err);
+                                    reject(err);
+                                });
+                            }
                         }
 
-                        if (!user.WalletIdValid && user.EMailValid) {
-                            const subject = translations.__('errors.wallet.subject');
-                            sendEmail(user, 'error-wallet.pug', subject).then( (success)  => {
-                                if (success) {
-                                    user.EmailSent = true;
-                                    user.EmailSentDate = new Date();
-
-                                    user.save().then(() => {
-                                        resolve();
-                                    }).catch(err => {
-                                        logger.log('error', err);
-                                        reject(err);
-                                    });
-                                } else {
-                                    reject();
-                                }
-                            }).catch(err => {
-                                logger.log('error', err);
-                                reject(err);
-                            });
-                        }
-                    }
-
-                    user.save().then(() => {
-                        resolve(true);
-                    }).catch(err => {
-                        logger.log('error', err);
-                        reject(err);
+                        user.save().then(() => {
+                            resolve(true);
+                        }).catch(err => {
+                            logger.log('error', err);
+                            reject(err);
+                        });
                     });
-                });
-            }
-        }).catch(err => {
-            logger.log('error', err);
-            reject(err);
+                }
+            }).catch(err => {
+                logger.log('error', err);
+                reject(err);
+            });
         });
-    });
+    }
 }
+
+module.exports = qualityProcess;

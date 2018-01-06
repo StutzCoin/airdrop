@@ -1,5 +1,8 @@
 import {sms} from '../../src/process/smsProcess';
 
+const SmsProcess = require('../../src/process/smsProcess');
+const smsProcess = new SmsProcess();
+
 const models = require('../../models/index');
 
 import {saveUsers, truncateUsers, getFirstUser} from '../helpers/user';
@@ -38,7 +41,7 @@ describe('Process: smsProcess', () => {
         }]);
 
         // Act
-        const content = await sms(true);
+        const content = await smsProcess.sms(true);
 
         // Assert
         let user = await getFirstUser();
@@ -66,7 +69,7 @@ describe('Process: smsProcess', () => {
         }]);
 
         // Act
-        const content = await sms(true);
+        const content = await smsProcess.sms(true);
 
         // Assert
         let user = await getFirstUser();

@@ -9,7 +9,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 var util = require('util');
-import {sendEmail} from '../../src/modules/sendEmail';
+const SendEmail = require('../../src/modules/sendEmail');
+const sendEmail = new SendEmail();
 
 const Logger = require('../modules/logger');
 const logger = new Logger();
@@ -88,7 +89,7 @@ app.post('/validateEmail', function handleReceiveResults(req, res) {
             user.EmailValidated = true;
             user.save().then(() => {
                 const subject = 'Stutz coin: email validated';
-                sendEmail(user, 'email-validated.pug', subject).then((success) => {
+                sendEmail.sendEmail(user, 'email-validated.pug', subject).then((success) => {
                 });
             })
         }
@@ -122,7 +123,7 @@ app.post('/validatePhone', function handleReceiveResults(req, res) {
             user.PhoneValidated = true;
             user.save().then(() => {
                 const subject = 'Stutz coin: registration completed';
-                sendEmail(user, 'registration-completed.pug', subject).then((success) => {
+                sendEmail.sendEmail(user, 'registration-completed.pug', subject).then((success) => {
                 });
             })
         }
