@@ -84,9 +84,9 @@ node run bin/init-database.js
 node src/process/importProcess.js
 
 # start all recurring processes, run every 30 s
-pm2 start  bin/send-email.js --restart-delay 30000
-pm2 start  bin/send-sms.js --restart-delay 30000
 pm2 start  bin/check-data.js --restart-delay 30000
+pm2 start  bin/send-email.js --restart-delay 40000
+pm2 start  bin/send-sms.js --restart-delay 50000
 
 # list processes
 pm2 list
