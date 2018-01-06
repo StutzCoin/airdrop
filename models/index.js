@@ -8,10 +8,21 @@ var env = process.env.NODE_ENV || 'development';
 var config = require(__dirname + '/../config/config.js')[env];
 var db = {};
 
+
+
+const Logger = require('../src/modules/logger');
+const logger = new Logger();
+
+const opts = {
+    logging: (msg) => logger.debug(msg),
+};
+
+var sequelizeOptions = Object.assign(config, opts);
+
 if (config.use_env_variable) {
-    var sequelize = new Sequelize(process.env[config.use_env_variable], config);
+    var sequelize = new Sequelize(process.env[config.use_env_variable], sequelizeOptions);
 } else {
-    var sequelize = new Sequelize(config.database, config.username, config.password, config);
+    var sequelize = new Sequelize(config.database, config.username, config.password, sequelizeOptions);
 }
 
 fs
