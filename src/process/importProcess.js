@@ -48,6 +48,7 @@ app.post('/userRegistered', function handleReceiveResults(req, res) {
         FirstName: answers[0].text,
         LastName: answers[1].text,
         EMail: answers[2].email,
+        Locale: answers[2].locale,
         Phone: answers[3].text,
         WalletId: answers[4].text,
         IsNew: true,

@@ -1,10 +1,13 @@
 doctype html
 html(lang="en")
   head
-    title= Stutz
+    title= __("validate-email.title")
+    meta(charset="utf-8")
   body
-    h1 Thanks for registering for Stutz Airdrop
+    p #{__("validate-email.welcome")}
+    h1 #{__("validate-email.thanks")}
     p.
-      Dear #{firstName} #{lastName}
+      #{__("dear")} #{firstName} #{lastName}
     p.
         Your email validation code is #{emailKey} valid up to #{emailKeyValidTo} please enter code <a href="#{emailValidationUrl}">Here</a> to complete airdrop registration.
+

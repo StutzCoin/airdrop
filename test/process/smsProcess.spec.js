@@ -27,6 +27,7 @@ describe('Process: smsProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: '',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+41790000000',

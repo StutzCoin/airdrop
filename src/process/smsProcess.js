@@ -10,6 +10,7 @@ const config = require('../../config/config.js')[env];
 import {sendSMS} from '../modules/sendSMS';
 
 const uuidv5 = require('uuid/v5');
+const i18n = require('i18n');
 
 //TODO use mocking instead of unit test boolean
 export async function sms(unitTest = false) {
@@ -28,7 +29,43 @@ export async function sms(unitTest = false) {
                 user.SmsKey = uuidv5(config.coin.home, uuidv5.URL);
                 user.SmsKeyValidTo = new Date() + duration.minutes(config.sms.expireInMinutes);
 
-                // TODO translations, use template engine?
+                //  TODO move out of here
+                // for node.js
+                var translations = {};
+                i18n.configure({
+                    locales: ['en', 'de', 'fr', 'it'],
+                    directory: __dirname + '/../../locales',
+                    autoReload: true,
+                    logDebugFn: function (msg) {
+                        logger.log('debug', msg);
+                    },
+                    logErrorFn: function (msg) {
+                        logger.log('error', msg);
+                    },
+                    register: translations,
+                    syncFiles: true,
+                    objectNotation: true
+                });
+                translations.setLocale(user.Locale);
+
+                // for PUG
+                i18n.configure({
+                    locales: ['en', 'de', 'fr', 'it'],
+                    directory: __dirname + '/../../locales',
+                    autoReload: true,
+                    logDebugFn: function (msg) {
+                        logger.log('debug', msg);
+                    },
+                    logErrorFn: function (msg) {
+                        logger.log('error', msg);
+                    },
+                    register: global,
+                    syncFiles: true,
+                    objectNotation: true
+                });
+                i18n.setLocale(user.Locale);
+                // end move out
+
                 const url = config.sms.formUrl + '?key=' + user.SmsKey + '&firstname=' + user.FirstName + '&lastname=' + user.LastName;  //use type-form hidden fields
                 const content = 'Your Stutz Code is ' + user.SmsKey + ' valid up to ' + user.SmsKeyValidTo + ' please visit url: ' + url + ' to complete airdrop registration.';
 

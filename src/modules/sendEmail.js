@@ -7,7 +7,7 @@ const config = require('../../config/config.js')[env];
 
 const pug = require('pug');
 
-export async function renderEmailContent(user, template) {
+async function renderEmailContent(user, template) {
     // require absolute path, don't remove __dirname
     const html = await pug.renderFile(__dirname + '/../../templates/' + template,
         {

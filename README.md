@@ -51,6 +51,7 @@ sms: {
 This module 
 * require typeform.com pro features "hidden fields" (https://www.typeform.com/help/hidden-fields/)
 * It use webhook (https://www.typeform.com/help/webhooks/) to get data as soon as forms are completed.
+* Localization https://www.typeform.com/help/multi-language-typeforms/
 Price: 25$ / Month
 
 ### Import

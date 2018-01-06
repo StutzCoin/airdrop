@@ -21,6 +21,7 @@ describe('Database: Users', () => {
             EMail: 'any@acme.com',
             IsNew: false,
             Mail: 'any@host.com',
+            Locale: 'en',
         }]);
     });
 

@@ -39,6 +39,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: '',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+33389000000'
@@ -52,6 +53,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+33389000000'
@@ -65,6 +67,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+33389000000'
@@ -78,6 +81,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: 'mzBc4XEFSdzCDcTxAgf6EZXgsZWpztRhef',
             Phone: '+33389000000'
@@ -91,6 +95,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: 'LVg2kJoFNg45Nbpy53h7Fe1wKyeXVRhMH9',
             Phone: '+33389000000'
@@ -104,6 +109,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+33389000000'
@@ -117,6 +123,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+33389000000'
@@ -130,6 +137,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '0389000000'
@@ -143,6 +151,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+41791234567'
@@ -156,6 +165,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '0791234567'
@@ -169,6 +179,7 @@ describe('Process: qualityProcess', () => {
             IsNew: true,
             FirstName: 'Jane',
             EMail: 'any@acme.com',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '791234567'

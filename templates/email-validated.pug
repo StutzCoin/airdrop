@@ -1,10 +1,11 @@
 doctype html
 html(lang="en")
   head
-    title= Stutz
+    title= __("email-validated.title")
+    meta(charset="utf-8")
   body
-    h1 Stutz Airdrop email validated
+    h1 __("email-validated.h1") Stutz Airdrop email validated
     p.
-      Dear #{firstName} #{lastName}
+      __("dear") #{firstName} #{lastName}
     p.
-        Your email #{email} is now validated.
+        __("email-validated.text")

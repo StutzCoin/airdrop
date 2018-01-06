@@ -6,11 +6,11 @@ import logger from '../modules/logger';
 import {duration} from '../modules/time';
 import {sendEmail} from '../../src/modules/sendEmail';
 
-
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
 const uuidv5 = require('uuid/v5');
+const i18n = require('i18n');
 
 export async function email() {
     return new Promise(function (resolve, reject) {
@@ -33,7 +33,45 @@ export async function email() {
 
                 user.EmailKeyValidTo = expire;
 
-                const subject = 'Stutz email validation code (valid 15 min)';
+                //  TODO move out of here
+                // for node.js
+                var translations = {};
+                i18n.configure({
+                    locales: ['en', 'de', 'fr', 'it'],
+                    directory: __dirname + '/../../locales',
+                    autoReload: true,
+                    logDebugFn: function (msg) {
+                        logger.log('debug', msg);
+                    },
+                    logErrorFn: function (msg) {
+                        logger.log('error', msg);
+                    },
+                    register: translations,
+                    syncFiles: true,
+                    objectNotation: true
+                });
+                translations.setLocale(user.Locale);
+
+                // for PUG
+                i18n.configure({
+                    locales: ['en', 'de', 'fr', 'it'],
+                    directory: __dirname + '/../../locales',
+                    autoReload: true,
+                    logDebugFn: function (msg) {
+                        logger.log('debug', msg);
+                    },
+                    logErrorFn: function (msg) {
+                        logger.log('error', msg);
+                    },
+                    register: global,
+                    syncFiles: true,
+                    objectNotation: true
+                });
+                i18n.setLocale(user.Locale);
+                // end move out
+
+                const subject = translations.__('validate-email.subject');
+
                 sendEmail(user, 'validate-email.pug', subject).then( (success)  => {
                     if (success) {
                         user.EmailSent = true;

@@ -1,0 +1,18 @@
+{
+  "dear": "Chèr(e)",
+  "validate-email": {
+    "welcome": "Hi, welcome to the Stutz Airdrop!",
+    "subject": "Votre code de validation est valable 15 minutes",
+    "thanks": "Mercide votre interët pour Stutz",
+    "title": "Stutz Coin - Swissness coin"
+  },
+  "registration-completed": {
+    "h1": "Stutz Airdrop registration completed",
+    "text": "You should now wait a few days before your Stutz coins appear on your account."
+  },
+  "email-validated": {
+    "title": "Email Validation",
+    "h1": "Stutz Airdrop email validated",
+    "text": "Your email is now validated, you need to validate your phone number"
+  }
+}

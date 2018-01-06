@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
+        Locale: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
 
         // Wallet
         WalletId: {
