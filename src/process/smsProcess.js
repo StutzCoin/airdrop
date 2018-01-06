@@ -7,7 +7,8 @@ import {duration} from '../modules/time';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
-import {sendSMS} from '../modules/sendSMS';
+import sendSMS from '../modules/sendSMS';
+import translations from '../../src/modules/i18n';
 
 const uuidv5 = require('uuid/v5');
 const i18n = require('i18n');
@@ -26,6 +27,8 @@ export async function sms(unitTest = false) {
         }).then(users => {
             logger.log('info', 'Found ' + users.length + ' users to process.');
             users.forEach(user => {
+                translations.setLocale(user.Locale);
+
                 // Generate unique number valid 15 minutes
                 user.SmsKey = uuidv5(config.coin.home, uuidv5.URL);
 
@@ -38,24 +41,6 @@ export async function sms(unitTest = false) {
                 user.SmsKeyValidTo = expire;
 
                 //  TODO move out of here
-                // for node.js
-                var translations = {};
-                i18n.configure({
-                    locales: config.locales,
-                    directory: __dirname + '/../../locales',
-                    autoReload: true,
-                    logDebugFn: function (msg) {
-                        logger.log('debug', msg);
-                    },
-                    logErrorFn: function (msg) {
-                        logger.log('error', msg);
-                    },
-                    register: translations,
-                    syncFiles: true,
-                    objectNotation: true
-                });
-                translations.setLocale(user.Locale);
-
                 // for PUG
                 i18n.configure({
                     locales: config.locales,

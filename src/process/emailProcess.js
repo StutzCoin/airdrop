@@ -5,6 +5,7 @@ const models = require('../../models/index');
 import logger from '../modules/logger';
 import {duration} from '../modules/time';
 import {sendEmail} from '../../src/modules/sendEmail';
+import translations from '../../src/modules/i18n';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
@@ -23,6 +24,8 @@ export async function email() {
         }).then(users => {
             logger.log('info', 'Found ' + users.length + ' users to process.');
             users.forEach(user => {
+                translations.setLocale(user.Locale);
+
                 user.EmailKey = uuidv5(config.coin.home, uuidv5.URL);
 
                 // TODO bad only for unit test
@@ -34,24 +37,6 @@ export async function email() {
                 user.EmailKeyValidTo = expire;
 
                 //  TODO move out of here
-                // for node.js
-                var translations = {};
-                i18n.configure({
-                    locales: config.locales,
-                    directory: __dirname + '/../../locales',
-                    autoReload: true,
-                    logDebugFn: function (msg) {
-                        logger.log('debug', msg);
-                    },
-                    logErrorFn: function (msg) {
-                        logger.log('error', msg);
-                    },
-                    register: translations,
-                    syncFiles: true,
-                    objectNotation: true
-                });
-                translations.setLocale(user.Locale);
-
                 // for PUG
                 i18n.configure({
                     locales: config.locales,

@@ -12,6 +12,9 @@ import logger from '../modules/logger';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config.js')[env];
 
+import {sendEmail} from '../../src/modules/sendEmail';
+import translations from '../../src/modules/i18n';
+
 export async function check() {
     logger.log('info', 'Quality data check started');
     return new Promise(function (resolve, reject) {
@@ -24,6 +27,8 @@ export async function check() {
         }).then(users => {
             if (users.length > 0) {
                 users.forEach(user => {
+                    translations.setLocale(user.Locale);
+
                     user.EMailValid = validator.validate(user.EMail);
 
                     const phone_number = phoneUtil.parse(user.Phone, "CH");
@@ -35,8 +40,26 @@ export async function check() {
                     if (user.EMailValid && user.PhoneValid && user.WalletIdValid) {
                         user.IsNew = false;
                     } else {
-                        if (user.EMailValid) {
-                            //TODO send an email to user with error message
+                        if (!user.PhoneValid && user.EMailValid) {
+                            const subject = translations.__('errors.phone.subject');
+                            sendEmail(user, 'error-phone.pug', subject).then( (success)  => {
+                                if (success) {
+                                    user.EmailSent = true;
+                                    user.EmailSentDate = new Date();
+
+                                    user.save().then(() => {
+                                        resolve();
+                                    }).catch(err => {
+                                        logger.log('error', err);
+                                        reject(err);
+                                    });
+                                } else {
+                                    reject();
+                                }
+                            }).catch(err => {
+                                logger.log('error', err);
+                                reject(err);
+                            });
                         }
                     }
 

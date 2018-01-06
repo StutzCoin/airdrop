@@ -1,3 +1,7 @@
+const should = require('should');
+const mockery = require('mockery');
+const nodemailerMock = require('nodemailer-mock');
+
 import {check} from '../../src/process/qualityProcess';
 
 const models = require('../../models/index');
@@ -21,17 +25,48 @@ async function checkUserAndReturn(usersToSave) {
     return users[0];
 }
 
+async function assertPhoneInvalidEmail() {
+// get the array of emails we sent
+    const sentMail = nodemailerMock.mock.sentMail();
+    // we should have sent one email
+    sentMail.length.should.be.exactly(1);
+
+    const Sent = sentMail[0];
+    expect(Sent.from).to.be.equal('stutzbot@gmail.com');
+    expect(Sent.subject).to.be.equal('Your phone is not valid');
+    expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Your phone is not valid</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
+}
+
 describe('Process: qualityProcess', () => {
 
-    before( done => {
-        models.sequelize.sync().then(function() {
+    before(done => {
+        // Enable mockery to mock objects
+        mockery.enable({
+            warnOnUnregistered: false,
+        });
+
+        /* Once mocked, any code that calls require('nodemailer')
+        will get our nodemailerMock */
+        mockery.registerMock('nodemailer', nodemailerMock);
+
+        models.sequelize.sync().then(function () {
             done();
         });
     });
 
     afterEach(done => {
         truncateUsers();
+
+        // Reset the mock back to the defaults after each test
+        nodemailerMock.mock.reset();
+
         done();
+    });
+
+    after(function () {
+        // Remove our mocked nodemailer and disable mockery
+        mockery.deregisterAll();
+        mockery.disable();
     });
 
     it('Should set EMailValid=false for invalid empty email field', async () => {
@@ -129,7 +164,10 @@ describe('Process: qualityProcess', () => {
             Phone: '+33389000000'
         }]);
 
+        // Assert
         expect(user.PhoneValid).to.be.equal(false);
+
+        await assertPhoneInvalidEmail();
     });
 
     it('Should set PhoneValid=false for non-CH swiss number', async () => {
@@ -144,6 +182,8 @@ describe('Process: qualityProcess', () => {
         }]);
 
         expect(user.PhoneValid).to.be.equal(false);
+
+        await assertPhoneInvalidEmail();
     });
 
     it('Should set PhoneValid=true for CH swiss number', async () => {

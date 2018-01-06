@@ -17,5 +17,12 @@
 	},
     "sms": {
       "text": "Your Stutz Code is %s valid up to %s please visit url: %s to complete airdrop registration."
+    },
+    "errors": {
+      "phone": {
+        "subject": "Your phone is not valid",
+        "title": "Your phone is not valid",
+        "text": "Either your phone number is invalid or not a swiss valid number. Please submit again your data."
+      }
     }
 }

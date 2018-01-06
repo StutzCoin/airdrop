@@ -58,6 +58,9 @@ This module
 * Localization https://www.typeform.com/help/multi-language-typeforms/
 Price: 25$ / Month
 
+# Validations
+* if phone is now swiss and email is valid, an error email is sent to user 'error-phone.pug'
+
 ### Import
 
 #### start server side webhook
