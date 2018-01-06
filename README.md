@@ -71,6 +71,8 @@ yarn run audit jane doe
 
 # Installation of module
 
+adapt config.js for production
+
 We use PM2, see pm2.help file
 
 ```

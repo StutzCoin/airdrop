@@ -74,6 +74,7 @@ describe('Process: importProcess', () => {
         await saveUsers([{
             FirstName: 'Jane',
             EMail: '',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+41790000000',
@@ -103,6 +104,7 @@ describe('Process: importProcess', () => {
         await saveUsers([{
             FirstName: 'Jane',
             EMail: '',
+            Locale: 'en',
             LastName: '',
             WalletId: '',
             Phone: '+41790000000',
