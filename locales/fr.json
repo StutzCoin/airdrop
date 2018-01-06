@@ -21,7 +21,7 @@
   "errors": {
     "phone": {
       "subject": "Your phone is not valid",
-      "title": "Your phone is not valid",
+      "title": "Vitre numero de telephone n'est pas valide.",
       "text": "Either your phone number is invalid or not a swiss valid number. Please submit again your data."
     }
   }

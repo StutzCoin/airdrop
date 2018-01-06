@@ -25,7 +25,7 @@ async function checkUserAndReturn(usersToSave) {
     return users[0];
 }
 
-async function assertPhoneInvalidEmail() {
+async function assertPhoneInvalidEmail(locale = 'en') {
 // get the array of emails we sent
     const sentMail = nodemailerMock.mock.sentMail();
     // we should have sent one email
@@ -34,7 +34,13 @@ async function assertPhoneInvalidEmail() {
     const Sent = sentMail[0];
     expect(Sent.from).to.be.equal('stutzbot@gmail.com');
     expect(Sent.subject).to.be.equal('Your phone is not valid');
-    expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Your phone is not valid</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
+    if (locale === 'en') {
+        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Your phone is not valid</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
+    }
+    if (locale === 'fr') {
+        expect(await Sent.text).to.be.equal('<!DOCTYPE html><html lang="en"><head><title>Vitre numero de telephone n\'est pas valide.</title><meta charset="utf-8"></head><body><p>Either your phone number is invalid or not a swiss valid number. Please submit again your data.</p><p><a href="https://twitter.com/STUTZcoin">Twitter</a> <a href="https://t.me/STUTZcoin">Telegram</a></p></body></html>');
+    }
+
 }
 
 describe('Process: qualityProcess', () => {
@@ -184,6 +190,23 @@ describe('Process: qualityProcess', () => {
         expect(user.PhoneValid).to.be.equal(false);
 
         await assertPhoneInvalidEmail();
+    });
+
+    it('Should set PhoneValid=false for non-CH swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            IsNew: true,
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            Locale: 'fr',
+            LastName: '',
+            WalletId: '',
+            Phone: '+33389000000'
+        }]);
+
+        // Assert
+        expect(user.PhoneValid).to.be.equal(false);
+
+        await assertPhoneInvalidEmail('fr');
     });
 
     it('Should set PhoneValid=true for CH swiss number', async () => {
