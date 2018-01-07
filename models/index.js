@@ -15,6 +15,7 @@ const logger = new Logger();
 
 const opts = {
     logging: (msg) => logger.debug(msg),
+    operatorsAliases: false
 };
 
 var sequelizeOptions = Object.assign(config, opts);
