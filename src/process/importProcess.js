@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // default port
-const server =app.listen(config.import.port);
+const server = app.listen(config.import.port);
 module.exports = server
 
 app.get('/alive', function handleAlive(req, res) {
@@ -55,7 +55,7 @@ app.post('/userRegistered', function handleReceiveResults(req, res) {
         Locale: answers[2].locale,
         Phone: answers[3].text,
         WalletId: answers[4].text,
-        IsNew: true,
+        Status: 'IsNew',
     });
     model.save();
 
@@ -76,8 +76,7 @@ app.post('/validateEmail', function handleReceiveResults(req, res) {
     // search for user matching
     models.Users.findAll({
         where: {
-            IsNew: false,
-            EmailSent: true,
+            Status: 'EmailSent',
             EmailKey: emailKey,
         },
         limit: 1
@@ -86,7 +85,7 @@ app.post('/validateEmail', function handleReceiveResults(req, res) {
             const user = users[0];
 
             // set field
-            user.EmailValidated = true;
+            user.Status = 'EmailValidated';
             user.save().then(() => {
                 const subject = 'Stutz coin: email validated';
                 sendEmail.sendEmail(user, 'email-validated.pug', subject).then((success) => {
@@ -110,8 +109,7 @@ app.post('/validatePhone', function handleReceiveResults(req, res) {
     // search for user matching
     models.Users.findAll({
         where: {
-            IsNew: false,
-            SmsSent: true,
+            Status: 'SmsSent',
             SmsKey: smsKey,
         },
         limit: 1
@@ -120,7 +118,7 @@ app.post('/validatePhone', function handleReceiveResults(req, res) {
             const user = users[0];
 
             // set field
-            user.PhoneValidated = true;
+            user.Status = 'SmsValidated';
             user.save().then(() => {
                 const subject = 'Stutz coin: registration completed';
                 sendEmail.sendEmail(user, 'registration-completed.pug', subject).then((success) => {

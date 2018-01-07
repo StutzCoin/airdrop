@@ -48,7 +48,7 @@ function qualityProcess() {
             // Get all new person data
             models.Users.findAll({
                 where: {
-                    IsNew: true,
+                    Status: 'IsNew',
                 },
                 limit: config.readLimit
             }).then(users => {
@@ -57,22 +57,26 @@ function qualityProcess() {
                         translations.setLocale(user.Locale);
                         i18n.setLocale(user.Locale);
 
-                        user.EMailValid = validator.validate(user.EMail);
+                        const emailValid = validator.validate(user.EMail);
 
                         const phone_number = phoneUtil.parse(user.Phone, "CH");
 
-                        user.PhoneValid = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
+                        const phoneValid = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
 
-                        user.WalletIdValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
+                        const walletValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
-                        if (user.EMailValid && user.PhoneValid && user.WalletIdValid) {
-                            user.IsNew = false;
+                        if (!emailValid) {
+                            user.Status = 'EmailError';
+                        }
+
+                        if (emailValid && phoneValid && walletValid) {
+                            user.Status = 'Valid';
                         } else {
-                            if (!user.PhoneValid && user.EMailValid) {
+                            if (!phoneValid && emailValid) {
                                 const subject = translations.__('errors.phone.subject');
                                 sendEmail.sendEmail(user, 'error-phone.pug', subject).then((success) => {
                                     if (success) {
-                                        user.EmailSent = true;
+                                        user.Status = 'PhoneErrorEmailSent';
                                         user.EmailSentDate = new Date();
 
                                         user.save().then(() => {
@@ -90,11 +94,11 @@ function qualityProcess() {
                                 });
                             }
 
-                            if (!user.WalletIdValid && user.EMailValid) {
+                            if (!walletValid && emailValid) {
                                 const subject = translations.__('errors.wallet.subject');
                                 sendEmail.sendEmail(user, 'error-wallet.pug', subject).then((success) => {
                                     if (success) {
-                                        user.EmailSent = true;
+                                        user.Status = 'WalletErrorEmailSent';
                                         user.EmailSentDate = new Date();
 
                                         user.save().then(() => {

@@ -104,9 +104,9 @@ describe('Process: qualityProcess', () => {
         mockery.disable();
     });
 
-    it('Should set EMailValid=false for invalid empty email field', async () => {
+    it('Should set Status=EmailError for invalid empty email field', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: '',
             Locale: 'en',
@@ -115,12 +115,12 @@ describe('Process: qualityProcess', () => {
             Phone: INVALID_SWISS_NUMBER
         }]);
 
-        expect(user.EMailValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('EmailError');
     });
 
-    it('Should set EMailValid=false for invalid email field', async () => {
+    it('Should set Status=EmailError for invalid email field', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any',
             Locale: 'en',
@@ -129,40 +129,40 @@ describe('Process: qualityProcess', () => {
             Phone: INVALID_SWISS_NUMBER
         }]);
 
-        expect(user.EMailValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('EmailError');
     });
 
-    it('Should set EMailValid=false for valid email field', async () => {
+    it('Should set Status=Valid for valid email field', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
-            FirstName: 'Jane',
-            EMail: 'any@acme.com',
-            Locale: 'en',
-            LastName: '',
-            WalletId: '',
-            Phone: INVALID_SWISS_NUMBER
-        }]);
-
-        expect(user.EMailValid).to.be.equal(true);
-    });
-
-    it('Should set WalletIdValid=true for valid testnet wallet id', async () => {
-        let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
             LastName: '',
             WalletId: LTC_MAINNET,
-            Phone: INVALID_SWISS_NUMBER
+            Phone: VALID_SWISS_NUMBER
         }]);
 
-        expect(user.WalletIdValid).to.be.equal(true);
+        expect(user.Status).to.be.equal('Valid');
     });
 
-    it('Should set WalletIdValid=false for valid mainnet wallet id', async () => {
+    it('Should set Status=Valid for valid testnet wallet id', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            Locale: 'en',
+            LastName: '',
+            WalletId: LTC_MAINNET,
+            Phone: VALID_SWISS_NUMBER
+        }]);
+
+        expect(user.Status).to.be.equal('Valid');
+    });
+
+    it('Should set Status=WalletErrorEmailSent for testnet wallet id', async () => {
+        let user = await checkUserAndReturn([{
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
@@ -171,14 +171,14 @@ describe('Process: qualityProcess', () => {
             Phone: VALID_SWISS_NUMBER
         }]);
 
-        expect(user.WalletIdValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('WalletErrorEmailSent');
 
         await assertWalletInvalidEmail();
     });
 
-    it('Should set WalletIdValid=false for empty  wallet id', async () => {
+    it('Should set Status=WalletErrorEmailSent for empty  wallet id', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
@@ -187,14 +187,14 @@ describe('Process: qualityProcess', () => {
             Phone: VALID_SWISS_NUMBER
         }]);
 
-        expect(user.WalletIdValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('WalletErrorEmailSent');
 
         await assertWalletInvalidEmail();
     });
 
-    it('Should set WalletIdValid=false and french text for empty wallet id', async () => {
+    it('Should set Status=WalletErrorEmailSent and french text for empty wallet id', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'fr',
@@ -203,14 +203,14 @@ describe('Process: qualityProcess', () => {
             Phone: VALID_SWISS_NUMBER
         }]);
 
-        expect(user.WalletIdValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('WalletErrorEmailSent');
 
         await assertWalletInvalidEmail('fr');
     });
 
-    it('Should set PhoneValid=false for non-CH swiss number', async () => {
+    it('Should set Status=PhoneErrorEmailSent for non-CH swiss number', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
@@ -220,14 +220,14 @@ describe('Process: qualityProcess', () => {
         }]);
 
         // Assert
-        expect(user.PhoneValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('PhoneErrorEmailSent');
 
         await assertPhoneInvalidEmail();
     });
 
-    it('Should set PhoneValid=false for non-CH swiss number', async () => {
+    it('Should set Status=PhoneErrorEmailSent for non-CH swiss number', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
@@ -236,14 +236,15 @@ describe('Process: qualityProcess', () => {
             Phone: INVALID_SWISS_NUMBER2
         }]);
 
-        expect(user.PhoneValid).to.be.equal(false);
+        // Assert
+        expect(user.Status).to.be.equal('PhoneErrorEmailSent');
 
         await assertPhoneInvalidEmail();
     });
 
-    it('Should set PhoneValid=false for non-CH swiss number', async () => {
+    it('Should set Status=PhoneErrorEmailSent for non-CH swiss number', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'fr',
@@ -253,50 +254,50 @@ describe('Process: qualityProcess', () => {
         }]);
 
         // Assert
-        expect(user.PhoneValid).to.be.equal(false);
+        expect(user.Status).to.be.equal('PhoneErrorEmailSent');
 
         await assertPhoneInvalidEmail('fr');
     });
 
-    it('Should set PhoneValid=true for CH swiss number', async () => {
+    it('Should set Status=Valid for CH swiss number', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
             LastName: '',
-            WalletId: '',
+            WalletId: LTC_MAINNET,
             Phone: '+41791234567'
         }]);
 
-        expect(user.PhoneValid).to.be.equal(true);
+        expect(user.Status).to.be.equal('Valid');
     });
 
-    it('Should set PhoneValid=true for CH swiss number', async () => {
+    it('Should set Status=Valid for CH swiss number', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
             LastName: '',
-            WalletId: '',
+            WalletId: LTC_MAINNET,
             Phone: '0791234567'
         }]);
 
-        expect(user.PhoneValid).to.be.equal(true);
+        expect(user.Status).to.be.equal('Valid');
     });
 
-    it('Should set PhoneValid=true for CH swiss number', async () => {
+    it('Should set Status=Valid for CH swiss number', async () => {
         let user = await checkUserAndReturn([{
-            IsNew: true,
+            Status: 'IsNew',
             FirstName: 'Jane',
             EMail: 'any@acme.com',
             Locale: 'en',
             LastName: '',
-            WalletId: '',
+            WalletId: LTC_MAINNET,
             Phone: '791234567'
         }]);
 
-        expect(user.PhoneValid).to.be.equal(true);
+        expect(user.Status).to.be.equal('Valid');
     });
 });

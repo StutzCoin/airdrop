@@ -49,7 +49,7 @@ describe('Process: emailProcess', () => {
     it('Should send proper email in english and set database field', async () => {
         // Arrange
         await saveUsers([{
-            IsNew: true,
+
             FirstName: 'Jane',
             EMail: '',
             Locale: 'en',
@@ -57,9 +57,7 @@ describe('Process: emailProcess', () => {
             WalletId: '',
             Phone: '+41790000000',
             // require by process
-            EMailValid: true,
-            EmailSent: false,
-            PhoneValid: true,
+            Status: 'Valid',
         }]);
 
         // Act
@@ -73,7 +71,7 @@ describe('Process: emailProcess', () => {
         expect(user.EmailKey).to.be.a.uuid('v5');
         expect(user.EmailValidTo).to.not.be.null;
         expect(user.EmailSentDate).to.not.be.null;
-        expect(user.EmailSent).to.be.equal(true);
+        expect(user.Status).to.be.equal('EmailSent');
 
         // get the array of emails we sent
         const sentMail = nodemailerMock.mock.sentMail();
@@ -90,7 +88,6 @@ describe('Process: emailProcess', () => {
     it('Should send proper email in french and set database field', async () => {
         // Arrange
         await saveUsers([{
-            IsNew: true,
             FirstName: 'Jane',
             EMail: '',
             Locale: 'fr',
@@ -98,9 +95,7 @@ describe('Process: emailProcess', () => {
             WalletId: '',
             Phone: '+41790000000',
             // require by process
-            EMailValid: true,
-            EmailSent: false,
-            PhoneValid: true,
+            Status: 'Valid',
         }]);
 
         // Act
@@ -114,7 +109,7 @@ describe('Process: emailProcess', () => {
         expect(user.EmailKey).to.be.a.uuid('v5');
         expect(user.EmailValidTo).to.not.be.null;
         expect(user.EmailSentDate).to.not.be.null;
-        expect(user.EmailSent).to.be.equal(true);
+        expect(user.Status).to.be.equal('EmailSent');
 
         // get the array of emails we sent
         const sentMail = nodemailerMock.mock.sentMail();

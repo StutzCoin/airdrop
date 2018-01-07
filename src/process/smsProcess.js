@@ -51,8 +51,7 @@ function smsProcess() {
 
             models.Users.findAll({
                 where: {
-                    EMailValidated: true,
-                    PhoneValid: true,
+                    Status: 'EmailValidated',
                 },
                 limit: config.readLimit
             }).then(users => {
@@ -105,6 +104,7 @@ function smsProcess() {
                         if (success) {
                             user.SmsSentDate = new Date();
                             user.SmsSent = true;
+                            user.Status = 'SmsSent';
 
                             user.save().then(() => {
                                 logger.log('audit', 'SMS code sent for user ' + user.Name);

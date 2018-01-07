@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        EMailValid: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
         EmailSent: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
@@ -29,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         EmailSentDate: DataTypes.DATE,
         EmailKey: DataTypes.STRING,
         EmailKeyValidTo: DataTypes.STRING,
-        EmailValidated: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
         Locale: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -50,10 +42,6 @@ module.exports = (sequelize, DataTypes) => {
 
         // Phone, SMS
         Phone: DataTypes.STRING,
-        PhoneValid: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
         SmsKey: DataTypes.STRING,
         SmsKeyValidTo: DataTypes.STRING,
         SmsSent: {
@@ -61,19 +49,41 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false,
         },
         SmsSentDate: DataTypes.DATE,
-        PhoneValidated: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
 
         // Audit
         ImportedDate: DataTypes.DATE,
 
         // Status
-        IsNew: {  // at import time
-            type: DataTypes.BOOLEAN,
-            defaultValue: true,
+        Status: {
+            type: DataTypes.ENUM,
+            values: [
+                'None',
+                'IsNew', // at import time
+
+                // emailProcess
+                'EmailSent',
+                'EmailValidated',
+
+                // smsProcess
+                'SmsSent',
+                'PhoneValidated',
+
+                'Completed',
+
+                // qualityProcess
+                'Valid',
+                'EmailError',
+                'WalletErrorEmailSent',
+                'PhoneErrorEmailSent',
+
+                // getCoinProcess
+                'GetCoin',
+                'Refused',
+            ],
+            defaultValue: 'None',
         },
+
+
     });
 
     // audit tables

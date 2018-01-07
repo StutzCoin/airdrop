@@ -47,8 +47,7 @@ function emailProcess() {
         return new Promise(function (resolve, reject) {
             models.Users.findAll({
                 where: {
-                    EMailValid: true,
-                    EmailSent: false,
+                    Status: 'Valid',
                 },
                 limit: config.readLimit
             }).then(users => {
@@ -89,7 +88,7 @@ function emailProcess() {
 
                     sendEmail.sendEmail(user, 'validate-email.pug', subject).then((success) => {
                         if (success) {
-                            user.EmailSent = true;
+                            user.Status = 'EmailSent';
                             user.EmailSentDate = new Date();
 
                             user.save().then(() => {
