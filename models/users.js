@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
 
-
         // EMail
         EMail: {
             type: DataTypes.STRING,
@@ -34,10 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         WalletId: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        WalletIdValid: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
         },
 
         // Phone, SMS
