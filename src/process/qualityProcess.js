@@ -62,9 +62,9 @@ function qualityProcess() {
 
                         const emailValid = validator.validate(user.EMail);
 
-                        const phone_number = phoneUtil.parse(user.Phone, config.sms.regionAllowed);
+                        const phoneNumber = phoneUtil.parse(user.Phone, config.sms.regionAllowed);
 
-                        const phoneValid = phoneUtil.isValidNumberForRegion(phone_number, config.sms.regionAllowed);
+                        const phoneValid = phoneUtil.isValidNumberForRegion(phoneNumber, config.sms.regionAllowed);
 
                         const walletValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
