@@ -17,6 +17,7 @@ const LTC_TESTNET = 'LVg2kJoFNg45Nbpy53h7Fe1wKyeXVRhMH9';
 const LTC_MAINNET = 'mzBc4XEFSdzCDcTxAgf6EZXgsZWpztRhef';
 
 const VALID_SWISS_NUMBER = '+41791234567';
+const PROPERLY_FORMATTED_SWISS_NUMBER = '+41791234567';
 const INVALID_SWISS_NUMBER = '+33389000000';
 const INVALID_SWISS_NUMBER2 = '0389000000';
 
@@ -260,6 +261,7 @@ describe('Process: qualityProcess', () => {
     });
 
     it('Should set Status=Valid for CH swiss number', async () => {
+        let PROPERLY_FORMATTED_SWISS_NUMBER = '+41791234567';
         let user = await checkUserAndReturn([{
             Status: 'IsNew',
             FirstName: 'Jane',
@@ -267,10 +269,11 @@ describe('Process: qualityProcess', () => {
             Locale: 'en',
             LastName: '',
             WalletId: LTC_MAINNET,
-            Phone: '+41791234567'
+            Phone: PROPERLY_FORMATTED_SWISS_NUMBER
         }]);
 
         expect(user.Status).to.be.equal('Valid');
+        expect(user.Phone).to.be.equal(PROPERLY_FORMATTED_SWISS_NUMBER);
     });
 
     it('Should set Status=Valid for CH swiss number', async () => {
@@ -285,6 +288,7 @@ describe('Process: qualityProcess', () => {
         }]);
 
         expect(user.Status).to.be.equal('Valid');
+        expect(user.Phone).to.be.equal(PROPERLY_FORMATTED_SWISS_NUMBER);
     });
 
     it('Should set Status=Valid for CH swiss number', async () => {
@@ -299,5 +303,6 @@ describe('Process: qualityProcess', () => {
         }]);
 
         expect(user.Status).to.be.equal('Valid');
+        expect(user.Phone).to.be.equal(PROPERLY_FORMATTED_SWISS_NUMBER);
     });
 });

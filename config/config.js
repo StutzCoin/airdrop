@@ -19,6 +19,7 @@ module.exports = {
             number: 'phone?number',
             expireInMinutes: 15,
             formUrl: "https://cdricwalter.typeform.com/to/RNvI6l",
+            regionAllowed: 'CH'
         },
         email: {
             host: 'localhost',

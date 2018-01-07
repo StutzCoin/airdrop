@@ -21,6 +21,9 @@ const sendEmail = new SendEmail();
 const Translations = require('../../src/modules/i18n');
 const translations = new Translations();
 
+// PNF.E164
+const E164 = 0;
+
 //  TODO move out of here
 // for PUG
 i18n.configure({
@@ -59,9 +62,9 @@ function qualityProcess() {
 
                         const emailValid = validator.validate(user.EMail);
 
-                        const phone_number = phoneUtil.parse(user.Phone, "CH");
+                        const phone_number = phoneUtil.parse(user.Phone, config.sms.regionAllowed);
 
-                        const phoneValid = phoneUtil.isValidNumberForRegion(phone_number, 'CH');
+                        const phoneValid = phoneUtil.isValidNumberForRegion(phone_number, config.sms.regionAllowed);
 
                         const walletValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
 
@@ -71,6 +74,10 @@ function qualityProcess() {
 
                         if (emailValid && phoneValid && walletValid) {
                             user.Status = 'Valid';
+
+                            // format phone number for later easier comparison
+                            const phoneNumber = phoneUtil.parseAndKeepRawInput(user.Phone, config.sms.regionAllowed);
+                            user.Phone = phoneUtil.format(phoneNumber, E164);
                         } else {
                             if (!phoneValid && emailValid) {
                                 const subject = translations.__('errors.phone.subject');
