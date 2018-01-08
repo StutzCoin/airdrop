@@ -1,0 +1,43 @@
+{
+  "apps": [
+    {
+      "name": "check-data",
+      "script": "./bin/check-data.js",
+      "instances": 1,
+      "exec_mode": "fork",
+      "restart_delay": 30000,
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "env_production" : {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "send-email",
+      "script": "./bin/send-email.js",
+      "instances": 1,
+      "exec_mode": "fork",
+      "restart_delay": 40000,
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "env_production" : {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "sendErrorEmail",
+      "script": "./bin/sendErrorEmail.js",
+      "instances": 1,
+      "exec_mode": "fork",
+      "restart_delay": 50000,
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "env_production" : {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}

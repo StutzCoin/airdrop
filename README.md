@@ -71,24 +71,40 @@ yarn run audit jane doe
 
 # Installation of module
 
-adapt config.js for production
-
-We use PM2, see pm2.help file
-
 ```
 git clone https://github.com/StutzCoin/airdrop.git
 npm install pm2 -g
 
 # only once
 node run bin/init-database.js 
+```
 
-# start webhook process, listen on port 3000, see config.js
-node src/process/importProcess.js
+adapt config.js for production
 
-# start all recurring processes, run every 30 s
-pm2 start  bin/check-data.js --restart-delay 30000
-pm2 start  bin/send-email.js --restart-delay 40000
-pm2 start  bin/send-sms.js --restart-delay 50000
+We use PM2, see pm2.help file
+
+To start all task during sales period:
+```pm2 start app.json --env production```
+
+Help:
+
+```
+# Start only the app named dataImport
+pm2 start app.json --only send-email
+
+# Stop all
+pm2 stop app.json
+
+# Restart all
+pm2 start   app.json
+## Or
+pm2 restart app.json
+
+# Reload all
+pm2 reload app.json
+
+# Delete all
+pm2 delete app.json
 
 # list processes
 pm2 list
@@ -96,10 +112,13 @@ pm2 list
 # stop processes
 pm2 kill
 
-# view logs
+# view logs of task id = 0
 pm2 log 0
-
+# or better
+pm2 monit
 ```
+
+
 #### testing
 Simulate Typeform calling back your server
 start server side webhook and see how to simulate call with curl from test/fixtures/readme.md
