@@ -24,6 +24,8 @@ describe('Process: getCoinProcess', () => {
 
     it('mutltiple user sharing same phone number, only one will get coins', async () => {
         // Arrange
+        const anyPhoneNumber = '1234';
+
         await saveUsers([
             {
                 FirstName: 'Jane',
@@ -31,7 +33,7 @@ describe('Process: getCoinProcess', () => {
                 EMail: '',
                 Locale: 'en',
                 WalletId: '',
-                Phone: '1234',
+                Phone: anyPhoneNumber,
                 // require by process
                 Status: 'Completed',
             },
@@ -41,7 +43,7 @@ describe('Process: getCoinProcess', () => {
                 EMail: '',
                 Locale: 'en',
                 WalletId: '',
-                Phone: '1234',
+                Phone: anyPhoneNumber,
                 // require by process
                 Status: 'Completed',
             },
@@ -51,19 +53,14 @@ describe('Process: getCoinProcess', () => {
         await getCoinProcess.getCoin();
 
         // Assert
-        // TODO fix test
-        // let jane = await getFirstUser('Jane');
-        // expect(jane).to.not.be.null;
-        // expect(jane.Status).to.be.equal('GetCoin');
-        //
-        // expect(await getFirstCoin('Jane')).to.not.be.null;
-        //
-        // // Dark get flagged & won't get coins
-        // let darkVador = await getFirstUser('Dark');
-        // expect(darkVador).to.not.be.null;
-        // expect(darkVador.Status).to.be.equal('Refused');
-        //
-        // expect(await getFirstCoin('Dark')).to.be.null;
+        let jane = await getFirstUser('Jane');
+        expect(await jane.Status).to.be.equal('GetCoin');
+        expect(await getFirstCoin('Jane')).to.not.be.null;
+
+        // Dark get flagged & won't get coins
+        let darkVador = await getFirstUser('Dark');
+        expect(darkVador.Status).to.be.equal('Refused');
+        expect(await getFirstCoin('Dark')).to.be.an('undefined');
     });
 
 });
