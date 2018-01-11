@@ -108,6 +108,7 @@ function qualityProcess() {
                                 if (!
                                         (
                                             // Swiss Carrier https://github.com/googlei18n/libphonenumber/blob/master/resources/carrier/en/41.txt
+                                            formattedPhone.startsWith("+4175") || //prepaid swisscom
                                             formattedPhone.startsWith("+4176") ||
                                             formattedPhone.startsWith("+4177") ||
                                             formattedPhone.startsWith("+4178") ||
