@@ -4,6 +4,8 @@ const models = require('../../models/index');
 const validator = require("email-validator");
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+var PNF = require('google-libphonenumber').PhoneNumberFormat;
+var PNT = require('google-libphonenumber').PhoneNumberType;
 
 const WAValidator = require('wallet-address-validator');
 
@@ -61,23 +63,85 @@ function qualityProcess() {
                         i18n.setLocale(user.Locale);
 
                         const emailValid = validator.validate(user.EMail);
-
-                        const phoneNumber = phoneUtil.parse(user.Phone, config.sms.regionAllowed);
-
-                        const phoneValid = phoneUtil.isValidNumberForRegion(phoneNumber, config.sms.regionAllowed);
-
-                        const walletValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
-
                         if (!emailValid) {
                             user.Status = 'EmailError';
                         }
 
-                        if (emailValid && phoneValid && walletValid) {
-                            user.Status = 'Valid';
+                        let region = config.sms.regionAllowed[0]
 
+                        const phoneNumber = phoneUtil.parse(user.Phone, region);
+                        let phoneValid = phoneUtil.isValidNumberForRegion(phoneNumber, region);
+                        if (phoneValid) {
+                            logger.log('debug',"valid swiss number");
+                            region = config.sms.regionAllowed[0];
+                        } else {
+                            logger.log('debug',"invalid swiss number, try to parse LI number");
+                            const phoneNumber = phoneUtil.parse(user.Phone, config.sms.regionAllowed[1]);
+                            phoneValid = phoneUtil.isValidNumberForRegion(phoneNumber, config.sms.regionAllowed[1]);
+
+                            if (phoneValid) {
+                                logger.log('debug',"valid LI number");
+                                region = config.sms.regionAllowed[1];
+                            } else {
+                                logger.log('debug',"invalid LI number");
+                            }
+                        }
+
+                        const walletValid = WAValidator.validate(user.WalletId, 'litecoin', config.networkType);
+
+
+
+                        let carrierValid = true;
+                        let formattedPhone;
+                        if (phoneValid) {
                             // format phone number for later easier comparison
-                            const phoneNumber = phoneUtil.parseAndKeepRawInput(user.Phone, config.sms.regionAllowed);
-                            user.Phone = phoneUtil.format(phoneNumber, E164);
+                            const phoneNumber = phoneUtil.parseAndKeepRawInput(user.Phone, region);
+
+                            if (phoneUtil.getNumberType(phoneNumber) != PNT.MOBILE) {
+                                logger.log('debug',"not a mobile swiss number");
+                                phoneValid = false;
+                            }
+
+                            // Check Carrier
+                            if (phoneValid) {
+                                formattedPhone = phoneUtil.format(phoneNumber, E164);
+                                if (!
+                                        (
+                                            // Swiss Carrier https://github.com/googlei18n/libphonenumber/blob/master/resources/carrier/en/41.txt
+                                            formattedPhone.startsWith("+4176") ||
+                                            formattedPhone.startsWith("+4177") ||
+                                            formattedPhone.startsWith("+4178") ||
+                                            formattedPhone.startsWith("+4179") ||
+
+                                            // Liechstenstein https://github.com/googlei18n/libphonenumber/blob/master/resources/carrier/en/423.txt
+                                            formattedPhone.startsWith("+423650") ||
+                                            formattedPhone.startsWith("+423651") ||
+                                            formattedPhone.startsWith("+423652") ||
+                                            formattedPhone.startsWith("+423660") ||
+                                            formattedPhone.startsWith("+423661") ||
+                                            formattedPhone.startsWith("+4236620") ||
+                                            formattedPhone.startsWith("+4236626") ||
+
+                                            formattedPhone.startsWith("+4236627") ||
+                                            formattedPhone.startsWith("+4236628") ||
+                                            formattedPhone.startsWith("+4236629") ||
+                                            formattedPhone.startsWith("+4236639") ||
+                                            formattedPhone.startsWith("+42373") ||
+                                            formattedPhone.startsWith("+42374") ||
+                                            formattedPhone.startsWith("+42377") ||
+                                            formattedPhone.startsWith("+42378") ||
+                                            formattedPhone.startsWith("+42379")
+                                       )) {
+                                    carrierValid = false;
+                                    phoneValid = false;
+                                    logger.log('debug','carrier is not swiss nor from liechtenstein');
+                                }
+                            }
+                        }
+
+                        if (emailValid && phoneValid && walletValid && carrierValid) {
+                            user.Status = 'Valid';
+                            user.Phone = formattedPhone;
                         } else {
                             if (!phoneValid && emailValid) {
                                 const subject = translations.__('errors.phone.subject');

@@ -243,7 +243,7 @@ describe('Process: qualityProcess', () => {
         await assertPhoneInvalidEmail();
     });
 
-    it('Should set Status=PhoneErrorEmailSent for non-CH swiss number', async () => {
+    it('Should set Status=PhoneErrorEmailSent for ' + INVALID_SWISS_NUMBER + 'non-CH swiss number', async () => {
         let user = await checkUserAndReturn([{
             Status: 'IsNew',
             FirstName: 'Jane',
@@ -260,7 +260,7 @@ describe('Process: qualityProcess', () => {
         await assertPhoneInvalidEmail('fr');
     });
 
-    it('Should set Status=Valid for CH swiss number', async () => {
+    it('Should set Status=Valid for +41791234567 swiss number', async () => {
         let PROPERLY_FORMATTED_SWISS_NUMBER = '+41791234567';
         let user = await checkUserAndReturn([{
             Status: 'IsNew',
@@ -276,7 +276,7 @@ describe('Process: qualityProcess', () => {
         expect(user.Phone).to.be.equal(PROPERLY_FORMATTED_SWISS_NUMBER);
     });
 
-    it('Should set Status=Valid for CH swiss number', async () => {
+    it('Should set Status=Valid for 0791234567 swiss number', async () => {
         let user = await checkUserAndReturn([{
             Status: 'IsNew',
             FirstName: 'Jane',
@@ -291,7 +291,7 @@ describe('Process: qualityProcess', () => {
         expect(user.Phone).to.be.equal(PROPERLY_FORMATTED_SWISS_NUMBER);
     });
 
-    it('Should set Status=Valid for CH swiss number', async () => {
+    it('Should set Status=Valid for 791234567 swiss number', async () => {
         let user = await checkUserAndReturn([{
             Status: 'IsNew',
             FirstName: 'Jane',
@@ -305,4 +305,47 @@ describe('Process: qualityProcess', () => {
         expect(user.Status).to.be.equal('Valid');
         expect(user.Phone).to.be.equal(PROPERLY_FORMATTED_SWISS_NUMBER);
     });
+
+    it('Should set Status=PhoneErrorEmailSent for fix line swiss number', async () => {
+        let user = await checkUserAndReturn([{
+            Status: 'IsNew',
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            Locale: 'en',
+            LastName: '',
+            WalletId: LTC_MAINNET,
+            Phone: '044 980 31 11'
+        }]);
+
+        expect(user.Status).to.be.equal('PhoneErrorEmailSent');
+    });
+
+    it('Should set Status=PhoneErrorEmailSent for fix line liechtenstein number', async () => {
+        let user = await checkUserAndReturn([{
+            Status: 'IsNew',
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            Locale: 'en',
+            LastName: '',
+            WalletId: LTC_MAINNET,
+            Phone: '+423 2377400'
+        }]);
+
+        expect(user.Status).to.be.equal('PhoneErrorEmailSent');
+    });
+
+    it('Should set Status=PhoneErrorEmailSent for mobile liechtenstein number', async () => {
+        let user = await checkUserAndReturn([{
+            Status: 'IsNew',
+            FirstName: 'Jane',
+            EMail: 'any@acme.com',
+            Locale: 'en',
+            LastName: '',
+            WalletId: LTC_MAINNET,
+            Phone: '+42378 12345'  // Salt LI
+        }]);
+
+        expect(user.Status).to.be.equal('Valid');
+    });
+
 });
