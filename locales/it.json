@@ -1,33 +1,33 @@
 {
-  "dear": "Dear",
+  "dear": "Caro/a",
   "validate-email": {
-    "welcome": "Hi, welcome to the Stutz Airdrop!",
-    "subject": "Stutz email validation code (valid 15 min)",
-    "thanks": "Thanks for registering for Stutz Airdrop",
+    "welcome": "Ciao, benvenuto all'Airdrop di Stutz!",
+    "subject": "Codice di verifica email Stutz (valido 15 minuti)",
+    "thanks": "Grazie per la tua registrazione al Airdrop di Stutz!",
     "title": "Stutz Coin - Swissness coin"
   },
   "registration-completed": {
-    "h1": "Stutz Airdrop registration completed",
-    "text": "You should now wait a few days before your Stutz coins appear on your account."
+    "h1": "Registrazione al Airdrop di Stutz completata",
+    "text": "Fra un paio di giorni i tuoi Stutz compariranno nel tuo account."
   },
   "email-validated": {
-    "title": "Email Validation",
-    "h1": "Stutz Airdrop email validated",
-    "text": "Your email is now validated, you need to validate your phone number"
+    "title": "Verifica Email",
+    "h1": "Email per l'Airdrop di Stutz verificata",
+    "text": "La tua email è ora verificata, procedi alla verifica del numero di telefono."
   },
   "sms": {
-    "text": "Your Stutz Code is %s valid up to %s please visit url: %s to complete airdrop registration."
+    "text": "Il tuo codice Stutz è %s valido per %s per favore visita: %s per completare la registrazione all'Airdrop."
   },
   "errors": {
     "phone": {
-      "subject": "Your phone is not valid",
-      "title": "Your phone is not valid",
-      "text": "Either your phone number is invalid or not a swiss valid number. Please submit again your data."
+      "subject": "Numero di telefono non valido",
+      "title": "Numero di telefono non valido",
+      "text": "È stato inserito un numero invalido o non svizzero. Per favore re-inserisci i dati."
     },
     "wallet": {
-      "subject": "Your wallet is not valid",
-      "title": "Your wallet is not valid",
-      "text": "Your wallet is not valid, please provide a new one. Please submit again your data."
+      "subject": "Wallet non valido",
+      "title": "Wallet non valido",
+      "text": "L'indirizzo wallet inserito non è valido, per favore controlla di avere inserito l'indirizzo correttamente."
     }
   }
 }
